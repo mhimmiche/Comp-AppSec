@@ -4,12 +4,12 @@ import defusedxml.ElementTree as ET
 def uploadAdmin(adminRoot):
 	# For now it just prints the values, will add SQL query later.
 	for child in adminRoot:
-		print child.tag, "With value ", child.text
+		print ">>>>> ", child.tag, "With value ", child.text
 
 def uploadDoctor(doctorRoot):
 	# For now it just prints the values, will add SQL query later.
 	for child in doctorRoot:
-		print child.tag, "With value ", child.text
+		print ">>>>> ", child.tag, "With value ", child.text
 
 def main():
 	# Printing out the provided
@@ -20,10 +20,15 @@ def main():
 	eRoot = e.getroot()
 	eRootValue = eRoot.tag
 	print "root for XML: ", eRootValue
-	if eRootValue == "SystemAdministratorUserProfile":
-		uploadAdmin(eRoot)
-	elif eRootValue == "DoctorUserProfile":
-		uploadDoctor(eRoot)
+	for child in eRoot:
+		if child.tag == "SystemAdministratorUserProfile":
+			print "[*] Found an Administrator [*]"
+			uploadAdmin(child)
+			print "[*] End of Administrator [*]"
+		elif child.tag == "DoctorUserProfile":
+			print "[*] Found a Doctor [*]"
+			uploadDoctor(child)
+			print "[*] End of Doctor [*]"
 
 
 if __name__ == "__main__":
