@@ -1,0 +1,10 @@
+<DoctorUserProfile>
+	<Username>value</Username>
+	<Roles>value</Roles>
+	<Permissions>value1,value2,value3</Permissions>
+	<FirstName>value</FirstName>
+	<LastName>value</LastName>
+	<PracticeName>value</PracticeName>
+	<PracticeAddress>value</PracticeAddress>
+	<RecoveryPhrase>value</RecoveryPhrase> 
+</DoctorUserProfile>
