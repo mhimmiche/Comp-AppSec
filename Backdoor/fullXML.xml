@@ -1,0 +1,38 @@
+<DBFile>
+	<DoctorUserProfile>
+		<Username>value</Username>
+		<Roles>value</Roles>
+		<Permissions>value1,value2,value3</Permissions>
+		<FirstName>value</FirstName>
+		<LastName>value</LastName>
+		<PracticeName>value</PracticeName>
+		<PracticeAddress>value</PracticeAddress>
+		<RecoveryPhrase>value</RecoveryPhrase> 
+	</DoctorUserProfile>
+
+	<SystemAdministratorUserProfile>
+		<Username>Test</Username>
+		<Roles>Testvalue</Roles>
+		<Permissions>value1,value2,value3</Permissions>
+		<FirstName>Testvalue</FirstName>
+		<LastName>Testvalue</LastName>
+	</SystemAdministratorUserProfile>
+
+	<DoctorUserProfile>
+	<Username>value</Username>
+	<Roles>value</Roles>
+	<Permissions>value1,value2,value3</Permissions>
+	<FirstName>value</FirstName>
+	<LastName>value</LastName>
+	<SystemAdministratorUserProfile>
+		<Username>Test</Username>
+		<Roles>Testvalue</Roles>
+		<Permissions>value1,value2,value3</Permissions>
+		<FirstName>Testvalue</FirstName>
+		<LastName>Testvalue</LastName>
+	</SystemAdministratorUserProfile>
+	<PracticeName>value</PracticeName>
+	<PracticeAddress>value</PracticeAddress>
+	<RecoveryPhrase>value</RecoveryPhrase> 
+</DoctorUserProfile>
+</DBFile>
