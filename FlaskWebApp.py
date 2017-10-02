@@ -17,42 +17,59 @@ app.config.update(
 principals = Principal(app, skip_static=True)
 
 # Needs
-addPatient = RoleNeed('add patient')
-editPatient = RoleNeed('edit patient')
-addMedAd = RoleNeed('add medical admin')
-editMedAd = RoleNeed('edit medical admin')
-addInsAd = RoleNeed('add insurance admin')
-editInsAd = RoleNeed('edit insurance admin')
-addNurse = RoleNeed('add nurse')
-editNurse = RoleNeed('edit nurse')
-editDoctor = RoleNeed('edit doctor')
-addDoctor = RoleNeed('add doctor')
-addSysAd = RoleNeed('add system admin')
-editSysAd = RoleNeed('edit system admin')
-delUserP = RoleNeed('delete user permission')
-editRec = RoleNeed('edit record access')
-viewPII = RoleNeed('view PII')
-assignPerm = RoleNeed('assing permission')
+be_admin = RoleNeed('admin')
+be_doctor = RoleNeed('doctor')
+be_nurse = RoleNeed('nurse')
+be_medAd = RoleNeed('medAdmin')
+be_insAd = RoleNeed('insAdmin')
+be_patient = RoleNeed('patient')
 to_sign_in = ActionNeed('sign in')
 
 # Permissions
-admin = Permission(to_sign_in, addPatient, editPatient,addDoctor,editDoctor,addMedAd,editMedAd
-,addInsAd,editInsAd,addNurse,editNurse,addSysAd,editSysAd,delUserP,assignPerm,editRec)
-admin.description= "System Administrator"
-doctor = Permission(to_sign_in,addPatient,editPatient,addMedAd,editMedAd,addNurse,editNurse)
-doctor.description= "Doctor"
-nurse = Permission(to_sign_in,addPatient,editPatient)
-nurse.description= "Nurse"
-medAd = Permission(to_sign_in,addPatient,editPatient,viewPII)
-medAd.description= "Medical Administrator"
-insAd = Permission(to_sign_in, viewPII)
-insAd.description= "Insurance Admin"
-patient = Permission(to_sign_in)
-patient.description= "Patient"
+addPatient = Permission(be_admin, be_doctor, be_nurse, be_medAd)
+addPatient.description = "System Administrator's permissions"
+editPatient = Permission(be_admin, be_doctor, be_nurse, be_medAd)
+editPatient.description = "Doctor's permissions"
+addDoctor = Permission(be_admin)
+addDoctor.description = "Nurse's permissions"
+editDoctor = Permission(be_admin)
+editDoctor.description = "Medical Administrator's permissions"
+addMedAdmin = Permission(be_admin,be_doctor)
+addMedAdmin.description = "Insurance Administrator's permissions"
+editMedAdmin = Permission(be_admin,be_doctor)
+editMedAdmin.description = "Insurance Administrator's permissions"
+addInsAdmin = Permission(be_admin)
+addInsAdmin.description = "Patient's permissions"
+editInsAdmin = Permission(be_admin)
+editInsAdmin.description = "Patient's permissions"
+addNurse = Permission(be_admin, be_doctor)
+addNurse.description = "Patient's permissions"
+editNurse = Permission(be_admin, be_doctor)
+editNurse.description = "Patient's permissions"
+addSysAdmin = Permission(be_admin)
+addSysAdmin.description = "Patient's permissions"
+editSysAdmin = Permission(be_admin)
+editSysAdmin.description = "Patient's permissions"
+delUserP = Permission(be_admin)
+delUserP.description = "Patient's permissions"
+assignPerm = Permission(be_admin)
+assignPerm.description = "Patient's permissions"
+editRecordAccess = Permission(be_admin)
+editRecordAccess.description = "Patient's permissions"
+viewPII = Permission(be_medAd,be_insAd)
+viewPII.description = "Patient's permissions"
+all = Permission(be_admin,be_doctor,be_insAd,be_medAd,be_nurse,be_patient)
+all.description = "all users permitted"
+be_admin= Permission(be_admin)
+be_doctor=Permission(be_doctor)
+be_insAd=Permission(be_insAd)
+be_medAd=Permission(be_medAd)
+be_nurse=Permission(be_nurse)
+be_patient=Permission(be_patient)
 
-apps_permissions = [admin, doctor, nurse, medAd, insAd, patient]
-apps_needs = [addPatient, editPatient, addDoctor, editDoctor, addMedAd,editMedAd,addInsAd,editInsAd,addNurse,editNurse,addSysAd,
-editSysAd,delUserP,assignPerm,editRec,viewPII]
+apps_needs = [be_admin, be_doctor, be_nurse, be_medAd, be_insAd, be_patient, to_sign_in]
+apps_permissions = [addPatient, editPatient, addDoctor, editDoctor, addMedAdmin,editMedAdmin,addInsAdmin,editInsAdmin,addNurse,editNurse,addSysAdmin,
+editSysAdmin,delUserP,assignPerm,editRecordAccess,viewPII]
 
 
 def authenticate(email, password):
@@ -78,7 +95,7 @@ def current_privileges():
 
 
 @app.route('/')
-@patient.require(http_exception=403)
+@all.require(http_exception=403)
 def index():
     return render_template('index.html')
 
@@ -97,12 +114,12 @@ def login():
     return render_template('login.html')
 	
 @app.route('/edit')
-@admin.require(http_exception=403)
+@all.require(http_exception=403)
 def editor():
     return render_template('editor.html')
 
 @app.route('/admin')
-@admin.require(http_exception=403)
+@be_admin.require(http_exception=403)
 def admin():
     return render_template('admin.html')
 
@@ -118,132 +135,139 @@ def logout():
 
 	
 @app.route('/createPatient')
-@doctor.require(http_exception=403)
+@addPatient.require(http_exception=403)
 def createPatient():
     return render_template('createPatient.html')
 
 @app.route('/createDoctor')
-@doctor.require(http_exception=403)
+@addDoctor.require(http_exception=403)
 def createDoctor():
     return render_template('createDoctor.html')
 
 @app.route('/createNurse')
-@doctor.require(http_exception=403)
+@addNurse.require(http_exception=403)
 def createNurse():
     return render_template('createNurse.html')	
 
 @app.route('/createSysAdmin')
-@doctor.require(http_exception=403)
+@addSysAdmin.require(http_exception=403)
 def createSysAdmin():
     return render_template('createSysAdmin.html')
 
 @app.route('/createMedAdmin')
-@doctor.require(http_exception=403)
+@addMedAdmin.require(http_exception=403)
 def createMedAdmin():
     return render_template('createMedAdmin.html')
 
 @app.route('/createInsAdmin')
-@doctor.require(http_exception=403)
+@addInsAdmin.require(http_exception=403)
 def createInsAdmin():
     return render_template('createInsAdmin.html')
 	
 @app.route('/editPerm')
-@doctor.require(http_exception=403)
+@assignPerm.require(http_exception=403)
 def editPerm():
     return render_template('editPerm.html')
 
 @app.route('/addDoctorExamRecord')
-@doctor.require(http_exception=403)
+@be_doctor.require(http_exception=403)
+@be_nurse.require(http_exception=403)
+@be_medAd.require(http_exception=403)
 def addDoctorExamRecord():
     return render_template('addDoctorExamRecord')
 	
 @app.route('/addTestResultRecord')
-@doctor.require(http_exception=403)
+@be_doctor.require(http_exception=403)
+@be_nurse.require(http_exception=403)
+@be_medAd.require(http_exception=403)
 def addTestResultRecord():
     return render_template('addTestResultRecord.html')
 	
 @app.route('/addDiagnosisRecord')
-@doctor.require(http_exception=403)
+@be_doctor.require(http_exception=403)
 def addDiagnosisRecord():
     return render_template('addDiagnosisRecord.html')
 	
 @app.route('/addInsuranceClaimRecord')
-@doctor.require(http_exception=403)
+@be_insAd.require(http_exception=403)
+@be_medAd.require(http_exception=403)
 def addInsuranceClaimRecord():
     return render_template('addInsuranceClaimRecord.html')
 	
 @app.route('/addRawRecord')
-@doctor.require(http_exception=403)
+@all.require(http_exception=403)
 def addRawRecord():
     return render_template('addRawRecord.html')
 	
 @app.route('/createCorrespondenceRecord')
-@doctor.require(http_exception=403)
+@be_doctor.require(http_exception=403)
+@be_patient.require(http_exception=403)
 def createCorrespondenceRecord():
     return render_template('createCorrespondenceRecord.html')
 	
 @app.route('/addCorrespondenceNote')
-@doctor.require(http_exception=403)
+@be_doctor.require(http_exception=403)
+@be_patient.require(http_exception=403)
 def addCorrespondenceNote():
     return render_template('addCorrespondenceNote.html')
 	
 @app.route('/listRecords')
-@doctor.require(http_exception=403)
+@all.require(http_exception=403)
 def listRecords():
     return render_template('listRecords.html')
 	
 @app.route('/viewRecord')
-@doctor.require(http_exception=403)
+@be_doctor.require(http_exception=403)
 def viewRecord():
     return render_template('viewRecord.html')
 	
 @app.route('/editRecordPerm')
-@doctor.require(http_exception=403)
+@editRecordAccess.require(http_exception=403)
 def editRecordPerm():
     return render_template('editRecordPerm.html')
 	
 @app.route('/editPatient')
-@doctor.require(http_exception=403)
+@editPatient.require(http_exception=403)
 def editPatient():
     return render_template('editPatient.html')
 	
 @app.route('/editDoctor')
-@doctor.require(http_exception=403)
+@editDoctor.require(http_exception=403)
 def editDoctor():
     return render_template('editDoctor.html')
 	
 @app.route('/editNurse')
-@doctor.require(http_exception=403)
+@editNurse.require(http_exception=403)
 def editNurse():
     return render_template('editNurse.html')
 	
 @app.route('/editSysAdmin')
-@doctor.require(http_exception=403)
+@editSysAdmin.require(http_exception=403)
 def editSysAdmin():
     return render_template('editSysAdmin.html')
 	
 @app.route('/editMedAdmin')
-@doctor.require(http_exception=403)
+@editMedAdmin.require(http_exception=403)
 def editMedAdmin():
     return render_template('editMedAdmin.html')
 	
 @app.route('/editInsAdmin')
-@doctor.require(http_exception=403)
+@editInsAdmin.require(http_exception=403)
 def editInsAdmin():
     return render_template('editInsAdmin.html')
 	
 @app.route('/viewPatientProfile')
-@doctor.require(http_exception=403)
+@viewPII.require(http_exception=403)
 def viewPatientProfile():
     return render_template('viewPatientProfile.html')
 	
 @app.route('/viewRecoveryPhrase')
-@doctor.require(http_exception=403)
+@be_admin.require(http_exception=403)
 def viewRecoveryPhrase():
     return render_template('viewRecoveryPhrase.html')
 	
 @app.route('/removeUserProfile')
-@doctor.require(http_exception=403)
+@delUserP.require(http_exception=403)
 def removeUserProfile():
     return render_template('removeUserProfile.html')
 	
@@ -270,11 +294,26 @@ def on_identity_loaded(sender, identity):
 		needs.append(to_sign_in)
 
     if identity.id == 'admin':
-		needs.append(addPatient)
+		needs.extend((addPatient,editPatient,addDoctor,editDoctor,addMedAdmin
+		,editMedAdmin,addInsAdmin,editInsAdmin,addNurse,editNurse,addSysAdmin
+		,editSysAdmin,delUserP,assignPerm,editRecordAccess,all))
 
     if identity.id == 'doctor':
-		needs.append(addPatient)
+		needs.extend((addPatient,editPatient,addMedAdmin,editMedAdmin
+		,addNurse,editNurse,all))
+		
+    if identity.id == 'nurse':
+		needs.extend((addPatient,editPatient,all))	
 
+    if identity.id == 'medAdmin':
+		needs.extend((addPatient,editPatient,viewPII,all))
+		
+    if identity.id == 'insAdmin':
+		needs.extend((viewPII,all))
+		
+    if identity.id == 'patient':
+		needs.append(all)
+		
     for n in needs:
         identity.provides.add(n)
 
