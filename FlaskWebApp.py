@@ -36,18 +36,19 @@ assignPerm = RoleNeed('assing permission')
 to_sign_in = ActionNeed('sign in')
 
 # Permissions
-admin = Permission(to_sign_in)
-admin.description= "System Admin"
-doctor = Permission(to_sign_in)
-doctor.description= "System Admin"
-nurse = Permission(to_sign_in)
-nurse.description= "System Admin"
-medAd = Permission(to_sign_in)
-medAd.description= "System Admin"
-insAd = Permission(to_sign_in)
-insAd.description= "System Admin"
+admin = Permission(to_sign_in, addPatient, editPatient,addDoctor,editDoctor,addMedAd,editMedAd
+,addInsAd,editInsAd,addNurse,editNurse,addSysAd,editSysAd,delUserP,assignPerm,editRec)
+admin.description= "System Administrator"
+doctor = Permission(to_sign_in,addPatient,editPatient,addMedAd,editMedAd,addNurse,editNurse)
+doctor.description= "Doctor"
+nurse = Permission(to_sign_in,addPatient,editPatient)
+nurse.description= "Nurse"
+medAd = Permission(to_sign_in,addPatient,editPatient,viewPII)
+medAd.description= "Medical Administrator"
+insAd = Permission(to_sign_in, viewPII)
+insAd.description= "Insurance Admin"
 patient = Permission(to_sign_in)
-patient.description= "System Admin"
+patient.description= "Patient"
 
 apps_permissions = [admin, doctor, nurse, medAd, insAd, patient]
 apps_needs = [addPatient, editPatient, addDoctor, editDoctor, addMedAd,editMedAd,addInsAd,editInsAd,addNurse,editNurse,addSysAd,
@@ -59,7 +60,7 @@ def authenticate(email, password):
         return "admin"
     elif password == email + "doctor":
         return "doctor"
-    elif password == email + "editor":
+    elif password == email + "nurse":
         return "nurse"
     elif password == email + "medAdmin":
 		return "medAdmin"
@@ -94,7 +95,11 @@ def login():
         else:
             return abort(401)
     return render_template('login.html')
-
+	
+@app.route('/edit')
+@admin.require(http_exception=403)
+def editor():
+    return render_template('editor.html')
 
 @app.route('/admin')
 @admin.require(http_exception=403)
@@ -102,10 +107,6 @@ def admin():
     return render_template('admin.html')
 
 
-@app.route('/nurse')
-@nurse.require(http_exception=403)
-def editor():
-    return render_template('admin.html')
 
 @app.route("/logout")
 def logout():
@@ -115,6 +116,137 @@ def logout():
     return render_template('logout.html')
 
 
+	
+@app.route('/createPatient')
+@doctor.require(http_exception=403)
+def createPatient():
+    return render_template('createPatient.html')
+
+@app.route('/createDoctor')
+@doctor.require(http_exception=403)
+def createDoctor():
+    return render_template('createDoctor.html')
+
+@app.route('/createNurse')
+@doctor.require(http_exception=403)
+def createNurse():
+    return render_template('createNurse.html')	
+
+@app.route('/createSysAdmin')
+@doctor.require(http_exception=403)
+def createSysAdmin():
+    return render_template('createSysAdmin.html')
+
+@app.route('/createMedAdmin')
+@doctor.require(http_exception=403)
+def createMedAdmin():
+    return render_template('createMedAdmin.html')
+
+@app.route('/createInsAdmin')
+@doctor.require(http_exception=403)
+def createInsAdmin():
+    return render_template('createInsAdmin.html')
+	
+@app.route('/editPerm')
+@doctor.require(http_exception=403)
+def editPerm():
+    return render_template('editPerm.html')
+
+@app.route('/addDoctorExamRecord')
+@doctor.require(http_exception=403)
+def addDoctorExamRecord():
+    return render_template('addDoctorExamRecord')
+	
+@app.route('/addTestResultRecord')
+@doctor.require(http_exception=403)
+def addTestResultRecord():
+    return render_template('addTestResultRecord.html')
+	
+@app.route('/addDiagnosisRecord')
+@doctor.require(http_exception=403)
+def addDiagnosisRecord():
+    return render_template('addDiagnosisRecord.html')
+	
+@app.route('/addInsuranceClaimRecord')
+@doctor.require(http_exception=403)
+def addInsuranceClaimRecord():
+    return render_template('addInsuranceClaimRecord.html')
+	
+@app.route('/addRawRecord')
+@doctor.require(http_exception=403)
+def addRawRecord():
+    return render_template('addRawRecord.html')
+	
+@app.route('/createCorrespondenceRecord')
+@doctor.require(http_exception=403)
+def createCorrespondenceRecord():
+    return render_template('createCorrespondenceRecord.html')
+	
+@app.route('/addCorrespondenceNote')
+@doctor.require(http_exception=403)
+def addCorrespondenceNote():
+    return render_template('addCorrespondenceNote.html')
+	
+@app.route('/listRecords')
+@doctor.require(http_exception=403)
+def listRecords():
+    return render_template('listRecords.html')
+	
+@app.route('/viewRecord')
+@doctor.require(http_exception=403)
+def viewRecord():
+    return render_template('viewRecord.html')
+	
+@app.route('/editRecordPerm')
+@doctor.require(http_exception=403)
+def editRecordPerm():
+    return render_template('editRecordPerm.html')
+	
+@app.route('/editPatient')
+@doctor.require(http_exception=403)
+def editPatient():
+    return render_template('editPatient.html')
+	
+@app.route('/editDoctor')
+@doctor.require(http_exception=403)
+def editDoctor():
+    return render_template('editDoctor.html')
+	
+@app.route('/editNurse')
+@doctor.require(http_exception=403)
+def editNurse():
+    return render_template('editNurse.html')
+	
+@app.route('/editSysAdmin')
+@doctor.require(http_exception=403)
+def editSysAdmin():
+    return render_template('editSysAdmin.html')
+	
+@app.route('/editMedAdmin')
+@doctor.require(http_exception=403)
+def editMedAdmin():
+    return render_template('editMedAdmin.html')
+	
+@app.route('/editInsAdmin')
+@doctor.require(http_exception=403)
+def editInsAdmin():
+    return render_template('editInsAdmin.html')
+	
+@app.route('/viewPatientProfile')
+@doctor.require(http_exception=403)
+def viewPatientProfile():
+    return render_template('viewPatientProfile.html')
+	
+@app.route('/viewRecoveryPhrase')
+@doctor.require(http_exception=403)
+def viewRecoveryPhrase():
+    return render_template('viewRecoveryPhrase.html')
+	
+@app.route('/removeUserProfile')
+@doctor.require(http_exception=403)
+def removeUserProfile():
+    return render_template('removeUserProfile.html')
+	
 @app.errorhandler(401)
 def authentication_failed(e):
     flash('Authenticated failed.')
@@ -137,10 +269,10 @@ def on_identity_loaded(sender, identity):
 						,'insAdmin', 'patient', 'sign in'):
 		needs.append(to_sign_in)
 
-    if identity.id in ('edit', 'admin'):
+    if identity.id == 'admin':
 		needs.append(addPatient)
 
-    if identity.id == 'admin':
+    if identity.id == 'doctor':
 		needs.append(addPatient)
 
     for n in needs:
