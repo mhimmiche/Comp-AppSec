@@ -60,12 +60,12 @@ viewPII = Permission(be_medAd,be_insAd)
 viewPII.description = "Patient's permissions"
 all = Permission(be_admin,be_doctor,be_insAd,be_medAd,be_nurse,be_patient)
 all.description = "all users permitted"
-be_admin= Permission(be_admin)
-be_doctor=Permission(be_doctor)
-be_insAd=Permission(be_insAd)
-be_medAd=Permission(be_medAd)
-be_nurse=Permission(be_nurse)
-be_patient=Permission(be_patient)
+beAdmin= Permission(be_admin)
+beDoctor=Permission(be_doctor)
+beInsAd=Permission(be_insAd)
+beMedAd=Permission(be_medAd)
+beNurse=Permission(be_nurse)
+bePatient=Permission(be_patient)
 
 apps_needs = [be_admin, be_doctor, be_nurse, be_medAd, be_insAd, be_patient, to_sign_in]
 apps_permissions = [addPatient, editPatient, addDoctor, editDoctor, addMedAdmin,editMedAdmin,addInsAdmin,editInsAdmin,addNurse,editNurse,addSysAdmin,
@@ -97,7 +97,7 @@ def current_privileges():
 @app.route('/')
 @all.require(http_exception=403)
 def index():
-    return render_template('index.html')
+    return render_template('login.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -108,7 +108,7 @@ def login():
         if user_id:
             identity = Identity(user_id)
             identity_changed.send(app, identity=identity)
-            return redirect(url_for('index'))
+            return render_template('privileges.html', priv=current_privileges())
         else:
             return abort(401)
     return render_template('login.html')
@@ -119,7 +119,7 @@ def editor():
     return render_template('editor.html')
 
 @app.route('/admin')
-@be_admin.require(http_exception=403)
+@beAdmin.require(http_exception=403)
 def admin():
     return render_template('admin.html')
 
@@ -170,27 +170,27 @@ def editPerm():
     return render_template('editPerm.html')
 
 @app.route('/addDoctorExamRecord')
-@be_doctor.require(http_exception=403)
-@be_nurse.require(http_exception=403)
-@be_medAd.require(http_exception=403)
+@beDoctor.require(http_exception=403)
+@beNurse.require(http_exception=403)
+@beMedAd.require(http_exception=403)
 def addDoctorExamRecord():
     return render_template('addDoctorExamRecord')
 	
 @app.route('/addTestResultRecord')
-@be_doctor.require(http_exception=403)
-@be_nurse.require(http_exception=403)
-@be_medAd.require(http_exception=403)
+@beDoctor.require(http_exception=403)
+@beNurse.require(http_exception=403)
+@beMedAd.require(http_exception=403)
 def addTestResultRecord():
     return render_template('addTestResultRecord.html')
 	
 @app.route('/addDiagnosisRecord')
-@be_doctor.require(http_exception=403)
+@beDoctor.require(http_exception=403)
 def addDiagnosisRecord():
     return render_template('addDiagnosisRecord.html')
 	
 @app.route('/addInsuranceClaimRecord')
-@be_insAd.require(http_exception=403)
-@be_medAd.require(http_exception=403)
+@beInsAd.require(http_exception=403)
+@beMedAd.require(http_exception=403)
 def addInsuranceClaimRecord():
     return render_template('addInsuranceClaimRecord.html')
 	
@@ -200,14 +200,14 @@ def addRawRecord():
     return render_template('addRawRecord.html')
 	
 @app.route('/createCorrespondenceRecord')
-@be_doctor.require(http_exception=403)
-@be_patient.require(http_exception=403)
+@beDoctor.require(http_exception=403)
+@bePatient.require(http_exception=403)
 def createCorrespondenceRecord():
     return render_template('createCorrespondenceRecord.html')
 	
 @app.route('/addCorrespondenceNote')
-@be_doctor.require(http_exception=403)
-@be_patient.require(http_exception=403)
+@beDoctor.require(http_exception=403)
+@bePatient.require(http_exception=403)
 def addCorrespondenceNote():
     return render_template('addCorrespondenceNote.html')
 	
@@ -217,7 +217,7 @@ def listRecords():
     return render_template('listRecords.html')
 	
 @app.route('/viewRecord')
-@be_doctor.require(http_exception=403)
+@beDoctor.require(http_exception=403)
 def viewRecord():
     return render_template('viewRecord.html')
 	
@@ -262,7 +262,7 @@ def viewPatientProfile():
     return render_template('viewPatientProfile.html')
 	
 @app.route('/viewRecoveryPhrase')
-@be_admin.require(http_exception=403)
+@beAdmin.require(http_exception=403)
 def viewRecoveryPhrase():
     return render_template('viewRecoveryPhrase.html')
 	
@@ -292,27 +292,24 @@ def on_identity_loaded(sender, identity):
     if identity.id in ('admin', 'doctor', 'nurse', 'medAdmin'
 						,'insAdmin', 'patient', 'sign in'):
 		needs.append(to_sign_in)
-
-    if identity.id == 'admin':
-		needs.extend((addPatient,editPatient,addDoctor,editDoctor,addMedAdmin
-		,editMedAdmin,addInsAdmin,editInsAdmin,addNurse,editNurse,addSysAdmin
-		,editSysAdmin,delUserP,assignPerm,editRecordAccess,all))
+		
+    if identity.id == "admin":
+		needs.append(be_admin)
 
     if identity.id == 'doctor':
-		needs.extend((addPatient,editPatient,addMedAdmin,editMedAdmin
-		,addNurse,editNurse,all))
+		needs.append(be_admin)
 		
     if identity.id == 'nurse':
-		needs.extend((addPatient,editPatient,all))	
+		needs.append(be_nurse)
 
     if identity.id == 'medAdmin':
-		needs.extend((addPatient,editPatient,viewPII,all))
+		needs.append(be_medAd)
 		
     if identity.id == 'insAdmin':
-		needs.extend((viewPII,all))
+		needs.append(be_insAd)
 		
     if identity.id == 'patient':
-		needs.append(all)
+		needs.append(be_patient)
 		
     for n in needs:
         identity.provides.add(n)
