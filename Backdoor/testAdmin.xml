@@ -1,0 +1,7 @@
+<SystemAdministratorUserProfile>
+	<Username>Test</Username>
+	<Roles>Testvalue</Roles>
+	<Permissions>value1,value2,value3</Permissions>
+	<FirstName>Testvalue</FirstName>
+	<LastName>Testvalue</LastName>
+</SystemAdministratorUserProfile>
