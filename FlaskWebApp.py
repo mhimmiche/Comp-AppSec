@@ -138,6 +138,9 @@ def logout():
 @addPatient.require(http_exception=403)
 def createPatient():
 	if request.method == 'POST':
+	    First = request.form['First']
+		Last = request.form['Last']
+		Npass = request.form['Npass']
         DOB = request.form['DOB']
         SSN = request.form['SSN']
 		Addr = request.form['Address']
@@ -148,6 +151,9 @@ def createPatient():
 @addDoctor.require(http_exception=403)
 def createDoctor():
 	if request.method == 'POST':
+	    First = request.form['First']
+		Last = request.form['Last']
+		Npass = request.form['Npass']
 		PracticeName = request.form['PracticeName']
 		PracticeAddress = request.form['PracticeAdd']
 		RecoveryPhrase = request.form['RecPhrase']
@@ -157,6 +163,9 @@ def createDoctor():
 @addNurse.require(http_exception=403)
 def createNurse():
 	if request.method == 'POST':
+	    First = request.form['First']
+		Last = request.form['Last']
+		Npass = request.form['Npass']
 		PracticeName = request.form['PracticeName']
 		PracticeAddress = request.form['PracticeAdd']
 		AssociatedDoc = request.form['AssociatedDoc']
@@ -175,6 +184,14 @@ def createSysAdmin():
 @app.route('/createMedAdmin')
 @addMedAdmin.require(http_exception=403)
 def createMedAdmin():
+	if request.method == 'POST':
+		First = request.form['First']
+		Last = request.form['Last']
+		Npass = request.form['Npass']
+		PracticeName = request.form['PracticeName']
+		PracticeAdd = request.form['PracticeAdd']
+		AssociatedDoc = request.form['AssociatedDoc']
+		AssociatedNur = request.form['AssociatedNur]
     return render_template('createMedAdmin.html')
 
 @app.route('/createInsAdmin')
@@ -253,42 +270,84 @@ def addRawRecord():
 @beDoctor.require(http_exception=403)
 @bePatient.require(http_exception=403)
 def createCorrespondenceRecord():
+	if request.method == 'POST':
+		DocUserID = request.form['DoctorUserID']
+		NoteDate = request.form['NoteDate']
+		NoteText = request.form['NoteText']
     return render_template('createCorrespondenceRecord.html')
 	
 @app.route('/addCorrespondenceNote')
 @beDoctor.require(http_exception=403)
 @bePatient.require(http_exception=403)
 def addCorrespondenceNote():
+	if request.method == 'POST':
+		CorrNum = request.form['CorrNum']
+		NoteDate = request.form['NoteDate']
+		NoteText = request.form['NoteText']
     return render_template('addCorrespondenceNote.html')
 	
 @app.route('/listRecords')
 @all.require(http_exception=403)
 def listRecords():
-    return render_template('listRecords.html')
+#sql statement to string
+    return render_template('listRecords.html') #,string list
+	
 	
 @app.route('/viewRecord')
 @beDoctor.require(http_exception=403)
 def viewRecord():
+	if request.method == 'POST':
+		recordID = request.form['recordID']
+	#sql retrieve recordID
+	#seperate retrieve checking for diagnosis record and doctor perm
     return render_template('viewRecord.html')
 	
 @app.route('/editRecordPerm')
 @editRecordAccess.require(http_exception=403)
 def editRecordPerm():
+	if request.method == 'POST':
+	    RecID = request.form['First']
+		EditPerm = request.form['editPerm']
+		ViewPerm = request.form['viewPerm']
+        
     return render_template('editRecordPerm.html')
 	
 @app.route('/editPatient')
 @editPatient.require(http_exception=403)
 def editPatient():
+    if request.method == 'POST':
+		UserID = request.form['UserID']
+	    First = request.form['First']
+		Last = request.form['Last']
+		Npass = request.form['Npass']
+        DOB = request.form['DOB']
+        SSN = request.form['SSN']
+		Addr = request.form['Address']
     return render_template('editPatient.html')
 	
 @app.route('/editDoctor')
 @editDoctor.require(http_exception=403)
 def editDoctor():
+    if request.method == 'POST':
+		UserID = request.form['UserID']
+	    First = request.form['First']
+		Last = request.form['Last']
+		Npass = request.form['Npass']
+		PracticeName = request.form['PracticeName']
+		PracticeAddress = request.form['PracticeAdd']
+		RecoveryPhrase = request.form['RecPhrase']
     return render_template('editDoctor.html')
 	
 @app.route('/editNurse')
 @editNurse.require(http_exception=403)
 def editNurse():
+    if request.method == 'POST':
+	    First = request.form['First']
+		Last = request.form['Last']
+		Npass = request.form['Npass']
+		PracticeName = request.form['PracticeName']
+		PracticeAddress = request.form['PracticeAdd']
+		AssociatedDoc = request.form['AssociatedDoc']
     return render_template('editNurse.html')
 	
 @app.route('/editSysAdmin')
@@ -299,11 +358,25 @@ def editSysAdmin():
 @app.route('/editMedAdmin')
 @editMedAdmin.require(http_exception=403)
 def editMedAdmin():
+    if request.method == 'POST':
+		First = request.form['First']
+		Last = request.form['Last']
+		Npass = request.form['Npass']
+		PracticeName = request.form['PracticeName']
+		PracticeAdd = request.form['PracticeAdd']
+		AssociatedDoc = request.form['AssociatedDoc']
+		AssociatedNur = request.form['AssociatedNur]
     return render_template('editMedAdmin.html')
 	
 @app.route('/editInsAdmin')
 @editInsAdmin.require(http_exception=403)
 def editInsAdmin():
+    if request.method == 'POST':
+		First = request.form['First']
+		Last = request.form['Last']
+		Npass = request.form['Npass']
+		CompName = request.form['CompanyName']
+		CompAdd = request.form['CompanyAddr']
     return render_template('editInsAdmin.html')
 	
 @app.route('/viewPatientProfile')
