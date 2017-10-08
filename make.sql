@@ -1,20 +1,3 @@
-/*DROP TABLE RolePermis cascade;
-DROP TABLE DocSpecInfo cascade;
-DROP TABLE NurSpecInfo cascade;
-DROP TABLE MedAdminSpecInfo cascade;
-DROP TABLE InsurAdminSpecInfo cascade;
-DROP TABLE PatientSpecInfo cascade;
-DROP TABLE DoctorExamRecord cascade;
-DROP TABLE TestResults cascade;
-DROP TABLE InsuranceClaim cascade;
-DROP TABLE PatientDocCorr cascade;
-DROP TABLE RawRec cascade;
-DROP TABLE Note cascade;
-DROP TABLE UserPro cascade;
-DROP TABLE Record cascade;
-DROP TABLE Role cascade;
-DROP TABLE Permission cascade;*/
-
 DROP DATABASE SMIRK;
 commit;
 
@@ -22,12 +5,16 @@ CREATE DATABASE SMIRK;
 commit;
 USE SMIRK;
 
+
+
 CREATE TABLE Role 
 (
 role VARCHAR(30)
 , description VARCHAR(70)
 , CONSTRAINT role_unique UNIQUE (role)
 );
+
+
 
 /*INSERT INTO Role VALUES ("System Administrator", "Highest default permissions. Administers the SMIRK system.");
 INSERT INTO Role VALUES ("Doctor", "A medical doctor");
@@ -41,8 +28,10 @@ CREATE TABLE RolePermis
 role VARCHAR(30)
 , defaultPer VARCHAR(30)
 , CONSTRAINT role_con UNIQUE (role)
-, CONSTRAINT role_FK FOREIGN KEY (`role`) REFERENCES SMIRK.Role (`role`)
+, CONSTRAINT role_FK FOREIGN KEY (role) REFERENCES SMIRK.Role (role)
 );
+
+
 
 /*INSERT INTO RolePermis Values ("System Administrator", "Add Patient");
 INSERT INTO RolePermis Values ("System Administrator", "Edit Patient");
@@ -71,86 +60,6 @@ INSERT INTO RolePermis Values ("Medical Administrator", "Add Patient");
 INSERT INTO RolePermis Values ("Medical Administrator", "Edit Patient");
 INSERT INTO RolePermis Values ("Medical Administrator", "View PII");
 INSERT INTO RolePermis Values ("Insurance Administrator", "View PII");*/
-
-
-
-CREATE TABLE DocSpecInfo
-(
-praName VARCHAR(20)
-, praAddress VARCHAR(20)
-, recPhrase VARCHAR(20)
-);
-
-CREATE TABLE NurSpecInfo
-(
-praName VARCHAR(20)
-, praAddress VARCHAR(20)
-, associatedDoc VARCHAR(20)
-);
-
-CREATE TABLE MedAdminSpecInfo
-(
-praName VARCHAR(20)
-, praAddress VARCHAR(20)
-, associatedDoc VARCHAR(20)
-, associatedNur VARCHAR(20)
-);
-
-CREATE TABLE InsurAdminSpecInfo
-(
-  companyName VARCHAR(20)
-, companyAddress VARCHAR(20)
-);
-
-CREATE TABLE PatientSpecInfo
-(
-  DOB DATE
-, SSN VARCHAR(11)
-, address VARCHAR(20)
-);
-
-
-
-CREATE TABLE DoctorExamRecord
-(
-  DateOfDia DATE
-, Doctor VARCHAR(20)
-, Notes VARCHAR(20)
-);
-
-CREATE TABLE TestResults
-(
-  DATEOfTest Date
-, Doctor VARCHAR(20)
-, Lab VARCHAR(20)
-, Notes VARCHAR(20)
-);
-
-CREATE TABLE InsuranceClaim
-(
-  DateOfClaim DATE
-, MedAdmin VARCHAR(20)
-, Amount INT
-, Status VARCHAR(20)
-);
-
-CREATE TABLE PatientDocCorr
-(
-  Doctor VARCHAR(20)
-, Notes VARCHAR(20)
-);
-
-CREATE TABLE RawRec
-(
-  Description VARCHAR(99)
-, File INT
-);
-
-CREATE TABLE Note
-(
-  DateofNote Date
-, Text VARCHAR(50)
-);
 
 CREATE TABLE Permission
 (
@@ -187,7 +96,42 @@ username VARCHAR(20)
 , specInfo VARCHAR(30)
 , CONSTRAINT username_PK PRIMARY KEY(username)
 , CONSTRAINT username_con UNIQUE (username)
-, CONSTRAINT permission_FK FOREIGN KEY (`permission`) REFERENCES SMIRK.Permission (`permission`)
+, CONSTRAINT permission_FK FOREIGN KEY (permission) REFERENCES SMIRK.Permission (permission)
+);
+
+CREATE TABLE DocSpecInfo
+(
+praName VARCHAR(20)
+, praAddress VARCHAR(20)
+, recPhrase VARCHAR(20)
+);
+
+CREATE TABLE NurSpecInfo
+(
+praName VARCHAR(20)
+, praAddress VARCHAR(20)
+, associatedDoc VARCHAR(20)
+);
+
+CREATE TABLE MedAdminSpecInfo
+(
+praName VARCHAR(20)
+, praAddress VARCHAR(20)
+, associatedDoc VARCHAR(20)
+, associatedNur VARCHAR(20)
+);
+
+CREATE TABLE InsurAdminSpecInfo
+(
+  companyName VARCHAR(20)
+, companyAddress VARCHAR(20)
+);
+
+CREATE TABLE PatientSpecInfo
+(
+  DOB DATE
+, SSN VARCHAR(11)
+, address VARCHAR(20)
 );
 
 CREATE TABLE Record
@@ -201,8 +145,61 @@ CREATE TABLE Record
 , viewPermissions VARCHAR(20)
 , recordTypeSpec VARCHAR(20)
 , CONSTRAINT record_unique UNIQUE (recordID)
-, CONSTRAINT `owner_valid_FK` FOREIGN KEY (`owner`) REFERENCES SMIRK.UserPro (`username`)
-
+, CONSTRAINT owner_valid_FK FOREIGN KEY (owner) REFERENCES SMIRK.UserPro (username)
+, CONSTRAINT type_check_con CHECK(recordType = "DoctorExamRecord" OR recordType = "TestResults" OR recordType = "Diagnosis" OR recordType = "InsuranceClaim" OR recordType = "PatientDocCorr" OR recordType = "RawRec")
 );
+
+CREATE TABLE Note
+(
+  DateofNote Date
+, contents VARCHAR(50)
+, CONSTRAINT content_unique UNIQUE(contents, DateofNote)
+);
+
+CREATE TABLE DoctorExamRecord
+(
+  DateOfDia DATE
+, Doctor VARCHAR(20)
+, Notes VARCHAR(20)
+, CONSTRAINT EXAMnote_FK FOREIGN KEY (Notes) REFERENCES SMIRK.Note (contents)
+);
+
+CREATE TABLE TestResults
+(
+  DATEOfTest Date
+, Doctor VARCHAR(20)
+, Lab VARCHAR(20)
+, Notes VARCHAR(20)
+, CONSTRAINT TESTnote_FK FOREIGN KEY (Notes) REFERENCES SMIRK.Note (contents)
+);
+
+CREATE TABLE Diagnosis
+(
+  DATEOfTest Date
+, Doctor VARCHAR(20)
+, Diagnosis VARCHAR(100)
+);
+
+CREATE TABLE InsuranceClaim
+(
+  DateOfClaim DATE
+, MedAdmin VARCHAR(20)
+, Amount INT
+, Status VARCHAR(20)
+);
+
+CREATE TABLE PatientDocCorr
+(
+  Doctor VARCHAR(20)
+, Notes VARCHAR(20)
+, CONSTRAINT PATnote_FK FOREIGN KEY (Notes) REFERENCES SMIRK.Note (contents)
+);
+
+CREATE TABLE RawRec
+(
+  Description VARCHAR(99)
+, File BINARY(99)
+);
+
 
 commit;
