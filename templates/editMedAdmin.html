@@ -2,8 +2,14 @@
 {% block body %}
   <h2>editMedAdmin<h2>
   <form action="{{ url_for('editMedAdmin') }}" method=post>
-    Email <input type=text name=email>
-    Password <input type=password name=password>
+    UserID <input type=text name=UserID>
+	First <input type=text name=First>
+	Last <input type=text name=Last>
+	New Password <input type=password name=Npass>
+	Practice Name <input type=text name=PracticeName>
+    Practice Address <input type=password name=PracticeAdd>
+	Associated Doctors <input type=text name=AssociatedDoc>
+	Associated Nurses <input type=text name=AssociatedNur>
               <input type=submit value=Login>
   </form>
 {% endblock %}

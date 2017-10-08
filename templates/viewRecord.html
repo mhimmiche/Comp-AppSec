@@ -2,8 +2,7 @@
 {% block body %}
   <h2>viewRecord<h2>
   <form action="{{ url_for('viewRecord') }}" method=post>
-    Email <input type=text name=email>
-    Password <input type=password name=password>
-              <input type=submit value=Login>
+    RecordID <input type=text name=recordID>
+              <input type=submit value=View>
   </form>
 {% endblock %}

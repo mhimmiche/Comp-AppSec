@@ -2,8 +2,9 @@
 {% block body %}
   <h2>addCorrespondenceNote<h2>
   <form action="{{ url_for('addCorrespondenceNote') }}" method=post>
-    Email <input type=text name=email>
-    Password <input type=password name=password>
-              <input type=submit value=Login>
+    Correspondence Number <input type=text name=CorrNum>
+    Note Date <input type=text name=NoteDate>
+	Note Text <input type=text name=NoteText>
+              <input type=submit value=add>
   </form>
 {% endblock %}
