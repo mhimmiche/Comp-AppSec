@@ -1,19 +1,17 @@
 import sys
-<<<<<<< HEAD
 import getpass as gp
 import defusedxml.ElementTree as ET
 
-def uploadAdmin(adminRoot):
+def SystemAdministratorUserProfile(adminRoot):
 	vals = {"Username":False,"Roles":False,"Permissions":False,"FirstName":False,"LastName":False}
 	for child in adminRoot:
-		#print ">>>>> ", child.tag, "With value ", child.text
 		for k,v in vals.items():
 			if child.tag == k:
 				vals[k] = child.text
 	for k,v in vals.items():
 		print k, v
 
-def uploadDoctor(doctorRoot):
+def DoctorUserProfile(doctorRoot):
 	vals = {"Username":False,"Roles":False,"Permissions":False,"FirstName":False,"LastName":False,"PracticeName":False,"PracticeAddress":False,"RecoveryPhrase":False}
 	for child in adminRoot:
 		#print ">>>>> ", child.tag, "With value ", child.text
@@ -23,7 +21,7 @@ def uploadDoctor(doctorRoot):
 	for k,v in vals.items():
 		print k, v
 
-def uploadNurse(nurseRoot):
+def NurseUserProfile(nurseRoot):
 	vals = {"Username":False,"Roles":False,"Permissions":False,"FirstName":False,"LastName":False,"PracticeName":False,"PracticeAddress":False,"AssociatedDoctors":False}
 	for child in adminRoot:
 		#print ">>>>> ", child.tag, "With value ", child.text
@@ -33,7 +31,7 @@ def uploadNurse(nurseRoot):
 	for k,v in vals.items():
 		print k, v
 
-def uploadMedicalAdmin(medicalAdminRoot):
+def MedicalAdministratorUserProfile(medicalAdminRoot):
 	vals = {"Username":False,"Roles":False,"Permissions":False,"FirstName":False,"LastName":False,"PracticeName":False,"PracticeAddress":False,"AssociatedDoctors":False,"AssociatedNurses":False}
 	for child in adminRoot:
 		#print ">>>>> ", child.tag, "With value ", child.text
@@ -43,7 +41,7 @@ def uploadMedicalAdmin(medicalAdminRoot):
 	for k,v in vals.items():
 		print k, v
 
-def uploadInsuranceAdmin(insuranceAdmin):
+def InsuranceAdministratorUserProfile(insuranceAdmin):
 	vals = {"Username":False,"Roles":False,"Permissions":False,"FirstName":False,"LastName":False,"CompanyName":False,"CompanyAddress":False}
 	for child in adminRoot:
 		#print ">>>>> ", child.tag, "With value ", child.text
@@ -53,7 +51,7 @@ def uploadInsuranceAdmin(insuranceAdmin):
 	for k,v in vals.items():
 		print k, v
 
-def uploadPatientUser(patientUserRoot):
+def PatientUserProfile(patientUserRoot):
 	vals = {"Username":False,"Roles":False,"Permissions":False,"FirstName":False,"LastName":False,"DOB":False,"SSN":False,"Address":False}	
 	for child in adminRoot:
 		#print ">>>>> ", child.tag, "With value ", child.text
@@ -63,7 +61,7 @@ def uploadPatientUser(patientUserRoot):
 	for k,v in vals.items():
 		print k, v
 
-def uploadDoctorExamRecord(examRecordRoot):
+def DoctorExamRecord(examRecordRoot):
 	vals = {"RecordID":False,"RecordType":False,"RecordDate":False,"Owner":False,"Patient":False,"EditPermissions":False,"ViewPermissions":False,"Date":False}	
 	for child in adminRoot:
 		#print ">>>>> ", child.tag, "With value ", child.text
@@ -73,7 +71,7 @@ def uploadDoctorExamRecord(examRecordRoot):
 	for k,v in vals.items():
 		print k, v
 
-def uploadDiagnosisRecord(diagnosisRecordRoot):
+def DiagnosisRecord(diagnosisRecordRoot):
 	vals = {"RecordID":False,"RecordType":False,"RecordDate":False,"Owner":False,"Patient":False,"EditPermissions":False,"ViewPermissions":False,"Date":False,"Doctor":False,"Diagnosis":False}
 	for child in adminRoot:
 		#print ">>>>> ", child.tag, "With value ", child.text
@@ -83,7 +81,7 @@ def uploadDiagnosisRecord(diagnosisRecordRoot):
 	for k,v in vals.items():
 		print k, v
 
-def uploadTestResultsRecord(testResultRoot):
+def TestResultsRecord(testResultRoot):
 	vals = {"RecordID":False,"RecordType":False,"RecordDate":False,"Owner":False,"Patient":False,"EditPermissions":False,"ViewPermissions":False,"Date":False,"Doctor":False,"Lab":False,"Notes":False}
 	for child in adminRoot:
 		#print ">>>>> ", child.tag, "With value ", child.text
@@ -93,7 +91,7 @@ def uploadTestResultsRecord(testResultRoot):
 	for k,v in vals.items():
 		print k, v
 
-def uploadInsuranceClaimRecord(insuranceClaimRoot):
+def InsuranceClaimRecord(insuranceClaimRoot):
 	vals = {"RecordID":False,"RecordType":False,"RecordDate":False,"Owner":False,"Patient":False,"EditPermissions":False,"ViewPermissions":False,"Date":False,"MedicalAdministrator":False,"Amount":False,"Status":False}
 	for child in adminRoot:
 		#print ">>>>> ", child.tag, "With value ", child.text
@@ -103,7 +101,7 @@ def uploadInsuranceClaimRecord(insuranceClaimRoot):
 	for k,v in vals.items():
 		print k, v
 
-def uploadrawRecord(rawRecordRoot):
+def RawRecord(rawRecordRoot):
 	vals = {"RecordID":False,"RecordType":False,"RecordDate":False,"Owner":False,"Patient":False,"EditPermissions":False,"ViewPermissions":False,"Description":False,"File":False}
 	for child in adminRoot:
 		#print ">>>>> ", child.tag, "With value ", child.text
@@ -128,9 +126,6 @@ def setITAdmin():
 
 
 def main():
-	# Printing out the provided
-	print "First Argument: ", sys.argv[1]
-	# Determine what the XML root is
 	if len(sys.argv < 1):
 		print "[*] Arguments need to be provided"
 	else:
@@ -149,7 +144,7 @@ def main():
 					if not rightMethod:
 						print "Wrong tag provided: ", methodName
 					else:
-						methodName()
+						methodName(child)
 			else:
 				print("[*] Wrong XML file provided.")
 				exit(0)
