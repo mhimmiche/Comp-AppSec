@@ -2,14 +2,24 @@ import sys
 import getpass as gp
 import defusedxml.ElementTree as ET
 
+def checkIfCanAdd(vals):
+	for k,v in vals.items():
+		if vals[k] == False:
+			return False
+	return True
+
 def SystemAdministratorUserProfile(adminRoot):
 	vals = {"Username":False,"Roles":False,"Permissions":False,"FirstName":False,"LastName":False}
 	for child in adminRoot:
 		for k,v in vals.items():
 			if child.tag == k:
 				vals[k] = child.text
-	for k,v in vals.items():
-		print k, v
+	canAdd = checkIfCanAdd(vals)
+	if canAdd:
+		print "woo!"
+	else:
+		print "Some values were left blank."
+
 
 def DoctorUserProfile(doctorRoot):
 	vals = {"Username":False,"Roles":False,"Permissions":False,"FirstName":False,"LastName":False,"PracticeName":False,"PracticeAddress":False,"RecoveryPhrase":False}
@@ -18,8 +28,11 @@ def DoctorUserProfile(doctorRoot):
 		for k,v in vals.items():
 			if child.tag == k:
 				vals[k] = child.text
-	for k,v in vals.items():
-		print k, v
+	canAdd = checkIfCanAdd(vals)
+	if canAdd:
+		print "woo!"
+	else:
+		print "Some values were left blank."
 
 def NurseUserProfile(nurseRoot):
 	vals = {"Username":False,"Roles":False,"Permissions":False,"FirstName":False,"LastName":False,"PracticeName":False,"PracticeAddress":False,"AssociatedDoctors":False}
@@ -28,8 +41,11 @@ def NurseUserProfile(nurseRoot):
 		for k,v in vals.items():
 			if child.tag == k:
 				vals[k] = child.text
-	for k,v in vals.items():
-		print k, v
+	canAdd = checkIfCanAdd(vals)
+	if canAdd:
+		print "woo!"
+	else:
+		print "Some values were left blank."
 
 def MedicalAdministratorUserProfile(medicalAdminRoot):
 	vals = {"Username":False,"Roles":False,"Permissions":False,"FirstName":False,"LastName":False,"PracticeName":False,"PracticeAddress":False,"AssociatedDoctors":False,"AssociatedNurses":False}
@@ -38,8 +54,11 @@ def MedicalAdministratorUserProfile(medicalAdminRoot):
 		for k,v in vals.items():
 			if child.tag == k:
 				vals[k] = child.text
-	for k,v in vals.items():
-		print k, v
+	canAdd = checkIfCanAdd(vals)
+	if canAdd:
+		print "woo!"
+	else:
+		print "Some values were left blank."
 
 def InsuranceAdministratorUserProfile(insuranceAdmin):
 	vals = {"Username":False,"Roles":False,"Permissions":False,"FirstName":False,"LastName":False,"CompanyName":False,"CompanyAddress":False}
@@ -48,8 +67,11 @@ def InsuranceAdministratorUserProfile(insuranceAdmin):
 		for k,v in vals.items():
 			if child.tag == k:
 				vals[k] = child.text
-	for k,v in vals.items():
-		print k, v
+	canAdd = checkIfCanAdd(vals)
+	if canAdd:
+		print "woo!"
+	else:
+		print "Some values were left blank."
 
 def PatientUserProfile(patientUserRoot):
 	vals = {"Username":False,"Roles":False,"Permissions":False,"FirstName":False,"LastName":False,"DOB":False,"SSN":False,"Address":False}	
@@ -58,8 +80,11 @@ def PatientUserProfile(patientUserRoot):
 		for k,v in vals.items():
 			if child.tag == k:
 				vals[k] = child.text
-	for k,v in vals.items():
-		print k, v
+	canAdd = checkIfCanAdd(vals)
+	if canAdd:
+		print "woo!"
+	else:
+		print "Some values were left blank."
 
 def DoctorExamRecord(examRecordRoot):
 	vals = {"RecordID":False,"RecordType":False,"RecordDate":False,"Owner":False,"Patient":False,"EditPermissions":False,"ViewPermissions":False,"Date":False}	
@@ -68,8 +93,11 @@ def DoctorExamRecord(examRecordRoot):
 		for k,v in vals.items():
 			if child.tag == k:
 				vals[k] = child.text
-	for k,v in vals.items():
-		print k, v
+	canAdd = checkIfCanAdd(vals)
+	if canAdd:
+		print "woo!"
+	else:
+		print "Some values were left blank."
 
 def DiagnosisRecord(diagnosisRecordRoot):
 	vals = {"RecordID":False,"RecordType":False,"RecordDate":False,"Owner":False,"Patient":False,"EditPermissions":False,"ViewPermissions":False,"Date":False,"Doctor":False,"Diagnosis":False}
@@ -78,8 +106,11 @@ def DiagnosisRecord(diagnosisRecordRoot):
 		for k,v in vals.items():
 			if child.tag == k:
 				vals[k] = child.text
-	for k,v in vals.items():
-		print k, v
+	canAdd = checkIfCanAdd(vals)
+	if canAdd:
+		print "woo!"
+	else:
+		print "Some values were left blank."
 
 def TestResultsRecord(testResultRoot):
 	vals = {"RecordID":False,"RecordType":False,"RecordDate":False,"Owner":False,"Patient":False,"EditPermissions":False,"ViewPermissions":False,"Date":False,"Doctor":False,"Lab":False,"Notes":False}
@@ -88,8 +119,11 @@ def TestResultsRecord(testResultRoot):
 		for k,v in vals.items():
 			if child.tag == k:
 				vals[k] = child.text
-	for k,v in vals.items():
-		print k, v
+	canAdd = checkIfCanAdd(vals)
+	if canAdd:
+		print "woo!"
+	else:
+		print "Some values were left blank."
 
 def InsuranceClaimRecord(insuranceClaimRoot):
 	vals = {"RecordID":False,"RecordType":False,"RecordDate":False,"Owner":False,"Patient":False,"EditPermissions":False,"ViewPermissions":False,"Date":False,"MedicalAdministrator":False,"Amount":False,"Status":False}
@@ -98,8 +132,11 @@ def InsuranceClaimRecord(insuranceClaimRoot):
 		for k,v in vals.items():
 			if child.tag == k:
 				vals[k] = child.text
-	for k,v in vals.items():
-		print k, v
+	canAdd = checkIfCanAdd(vals)
+	if canAdd:
+		print "woo!"
+	else:
+		print "Some values were left blank."
 
 def RawRecord(rawRecordRoot):
 	vals = {"RecordID":False,"RecordType":False,"RecordDate":False,"Owner":False,"Patient":False,"EditPermissions":False,"ViewPermissions":False,"Description":False,"File":False}
@@ -108,8 +145,11 @@ def RawRecord(rawRecordRoot):
 		for k,v in vals.items():
 			if child.tag == k:
 				vals[k] = child.text
-	for k,v in vals.items():
-		print k, v
+	canAdd = checkIfCanAdd(vals)
+	if canAdd:
+		print "woo!"
+	else:
+		print "Some values were left blank."
 
 def setITAdmin():
 	username = input('Please enter a username: ')
