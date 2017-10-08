@@ -27,37 +27,37 @@ to_sign_in = ActionNeed('sign in')
 
 # Permissions
 addPatient = Permission(be_admin, be_doctor, be_nurse, be_medAd)
-addPatient.description = "System Administrator's permissions"
+addPatient.description = "add patient permission"
 editPatient = Permission(be_admin, be_doctor, be_nurse, be_medAd)
-editPatient.description = "Doctor's permissions"
+editPatient.description = "edit patient permission"
 addDoctor = Permission(be_admin)
-addDoctor.description = "Nurse's permissions"
+addDoctor.description = "add doctor permission"
 editDoctor = Permission(be_admin)
-editDoctor.description = "Medical Administrator's permissions"
+editDoctor.description = "edit doctor permission"
 addMedAdmin = Permission(be_admin,be_doctor)
-addMedAdmin.description = "Insurance Administrator's permissions"
+addMedAdmin.description = "add Medical Administrator permission"
 editMedAdmin = Permission(be_admin,be_doctor)
-editMedAdmin.description = "Insurance Administrator's permissions"
+editMedAdmin.description = "edit Medical Administrator permission"
 addInsAdmin = Permission(be_admin)
-addInsAdmin.description = "Patient's permissions"
+addInsAdmin.description = "add Insurance Admin permission"
 editInsAdmin = Permission(be_admin)
-editInsAdmin.description = "Patient's permissions"
+editInsAdmin.description = "edit Insurance Admin permission"
 addNurse = Permission(be_admin, be_doctor)
-addNurse.description = "Patient's permissions"
+addNurse.description = "add Nurse permission"
 editNurse = Permission(be_admin, be_doctor)
-editNurse.description = "Patient's permissions"
+editNurse.description = "edit Nurse permission"
 addSysAdmin = Permission(be_admin)
-addSysAdmin.description = "Patient's permissions"
+addSysAdmin.description = "add System Admin permission"
 editSysAdmin = Permission(be_admin)
-editSysAdmin.description = "Patient's permissions"
+editSysAdmin.description = "edit System Admin permission"
 delUserP = Permission(be_admin)
-delUserP.description = "Patient's permissions"
+delUserP.description = "delete User Permission permission"
 assignPerm = Permission(be_admin)
-assignPerm.description = "Patient's permissions"
+assignPerm.description = "assign Permission permission"
 editRecordAccess = Permission(be_admin)
-editRecordAccess.description = "Patient's permissions"
+editRecordAccess.description = "edit Record Acess permission"
 viewPII = Permission(be_medAd,be_insAd)
-viewPII.description = "Patient's permissions"
+viewPII.description = "View PII permission"
 all = Permission(be_admin,be_doctor,be_insAd,be_medAd,be_nurse,be_patient)
 all.description = "all users permitted"
 beAdmin= Permission(be_admin)
@@ -80,11 +80,11 @@ def authenticate(email, password):
     elif password == email + "nurse":
         return "nurse"
     elif password == email + "medAdmin":
-		return "medAdmin"
+        return "medAdmin"
     elif password == email + "insAdmin":
-		return "insAdmin"
+        return "insAdmin"
     elif password == email + "patient":
-		return "patient"
+        return "patient"
     else:
         return None
 
@@ -137,21 +137,39 @@ def logout():
 @app.route('/createPatient')
 @addPatient.require(http_exception=403)
 def createPatient():
+	if request.method == 'POST':
+        DOB = request.form['DOB']
+        SSN = request.form['SSN']
+		Addr = request.form['Address']
+		
     return render_template('createPatient.html')
 
 @app.route('/createDoctor')
 @addDoctor.require(http_exception=403)
 def createDoctor():
+	if request.method == 'POST':
+		PracticeName = request.form['PracticeName']
+		PracticeAddress = request.form['PracticeAdd']
+		RecoveryPhrase = request.form['RecPhrase']
     return render_template('createDoctor.html')
 
 @app.route('/createNurse')
 @addNurse.require(http_exception=403)
 def createNurse():
+	if request.method == 'POST':
+		PracticeName = request.form['PracticeName']
+		PracticeAddress = request.form['PracticeAdd']
+		AssociatedDoc = request.form['AssociatedDoc']
     return render_template('createNurse.html')	
 
 @app.route('/createSysAdmin')
 @addSysAdmin.require(http_exception=403)
 def createSysAdmin():
+	if request.method == 'POST':
+		First = request.form['First']
+		Last = request.form['Last']
+		Npass = request.form['Npass']
+		
     return render_template('createSysAdmin.html')
 
 @app.route('/createMedAdmin')
@@ -162,11 +180,21 @@ def createMedAdmin():
 @app.route('/createInsAdmin')
 @addInsAdmin.require(http_exception=403)
 def createInsAdmin():
+	if request.method == 'POST':
+		First = request.form['First']
+		Last = request.form['Last']
+		Npass = request.form['Npass']
+		CompName = request.form['CompanyName']
+		CompAdd = request.form['CompanyAddr']
     return render_template('createInsAdmin.html')
 	
 @app.route('/editPerm')
 @assignPerm.require(http_exception=403)
 def editPerm():
+	if request.method == 'POST':
+		UserN = request.form['UserN']
+		Permission = request.form['perm']
+		
     return render_template('editPerm.html')
 
 @app.route('/addDoctorExamRecord')
@@ -174,6 +202,11 @@ def editPerm():
 @beNurse.require(http_exception=403)
 @beMedAd.require(http_exception=403)
 def addDoctorExamRecord():
+	if request.method == 'POST':
+		Date = request.form['Date']
+		Doctor = request.form['Doctor']
+		Notes = request.form['Notes']
+		
     return render_template('addDoctorExamRecord')
 	
 @app.route('/addTestResultRecord')
@@ -181,22 +214,39 @@ def addDoctorExamRecord():
 @beNurse.require(http_exception=403)
 @beMedAd.require(http_exception=403)
 def addTestResultRecord():
+	if request.method == 'POST':
+		Date = request.form['Date']
+		Doctor = request.form['Doctor']
+		Lab = request.form['Lab']
+		Notes = request.form['Notes']
     return render_template('addTestResultRecord.html')
 	
 @app.route('/addDiagnosisRecord')
 @beDoctor.require(http_exception=403)
 def addDiagnosisRecord():
+    if request.method == 'POST':
+		Date = request.form['Date']
+		Doctor = request.form['Doctor']
+		Diagnosis = request.form['Diagnosis']
     return render_template('addDiagnosisRecord.html')
 	
 @app.route('/addInsuranceClaimRecord')
 @beInsAd.require(http_exception=403)
 @beMedAd.require(http_exception=403)
 def addInsuranceClaimRecord():
+	if request.method == 'POST':
+		Date = request.form['Date']
+		MedUserID = request.form['MedUserID']
+		Amount = request.form['Amount']
+		Status = request.form['Status']
     return render_template('addInsuranceClaimRecord.html')
 	
 @app.route('/addRawRecord')
 @all.require(http_exception=403)
 def addRawRecord():
+	if request.method == 'POST':
+		Desc = request.form['Description']
+		File = request.form['file']
     return render_template('addRawRecord.html')
 	
 @app.route('/createCorrespondenceRecord')
