@@ -2,8 +2,10 @@
 {% block body %}
   <h2>addInsuranceClaimRecord<h2>
   <form action="{{ url_for('addInsuranceClaimRecord') }}" method=post>
-    Email <input type=text name=email>
-    Password <input type=password name=password>
-              <input type=submit value=Login>
+    Date YYYY/MM/DD <input type=text name=Date>
+    Medical Admin UserID <input type=text name=MedUserID>
+	Amount <input type=text name=Date>
+	Status <input type=text name=Date>
+              <input type=submit value=add>
   </form>
 {% endblock %}

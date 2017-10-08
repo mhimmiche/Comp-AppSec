@@ -2,8 +2,9 @@
 {% block body %}
   <h2>addDiagnosisRecord<h2>
   <form action="{{ url_for('addDiagnosisRecord') }}" method=post>
-    Email <input type=text name=email>
-    Password <input type=password name=password>
-              <input type=submit value=Login>
+    Date YYYY/MM/DD <input type=text name=Date>
+    Doctor <input type=text name=Doctor>
+	Diagnosis <input type=text name=Diagnosis>
+              <input type=submit value=add>
   </form>
 {% endblock %}

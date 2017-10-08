@@ -2,8 +2,12 @@
 {% block body %}
   <h2>createPatient<h2>
   <form action="{{ url_for('createPatient') }}" method=post>
-    Email <input type=text name=email>
-    Password <input type=password name=password>
-              <input type=submit value=Login>
+	First <input type=text name=First>
+	Last <input type=text name=Last>
+	New Password <input type=password name=Npass>
+    Date of birth YYYY/MM/DD <input type=text name=DOB>
+    Social Security Number <input type=password name=SSN>
+	Address <input type=text name=Address>
+              <input type=submit value=Create>
   </form>
 {% endblock %}
