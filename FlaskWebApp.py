@@ -342,6 +342,7 @@ def editDoctor():
 @editNurse.require(http_exception=403)
 def editNurse():
     if request.method == 'POST':
+		UserID = request.form['UserID']
 	    First = request.form['First']
 		Last = request.form['Last']
 		Npass = request.form['Npass']
@@ -353,12 +354,18 @@ def editNurse():
 @app.route('/editSysAdmin')
 @editSysAdmin.require(http_exception=403)
 def editSysAdmin():
+    if request.method == 'POST':
+	    UserID = request.form['UserID']
+		First = request.form['First']
+		Last = request.form['Last']
+		Npass = request.form['Npass']
     return render_template('editSysAdmin.html')
 	
 @app.route('/editMedAdmin')
 @editMedAdmin.require(http_exception=403)
 def editMedAdmin():
     if request.method == 'POST':
+	    UserID = request.form['UserID']
 		First = request.form['First']
 		Last = request.form['Last']
 		Npass = request.form['Npass']
@@ -372,6 +379,7 @@ def editMedAdmin():
 @editInsAdmin.require(http_exception=403)
 def editInsAdmin():
     if request.method == 'POST':
+	    UserID = request.form['UserID']
 		First = request.form['First']
 		Last = request.form['Last']
 		Npass = request.form['Npass']
@@ -382,16 +390,22 @@ def editInsAdmin():
 @app.route('/viewPatientProfile')
 @viewPII.require(http_exception=403)
 def viewPatientProfile():
+    if request.method == 'POST':
+	    PatientID = request.form['PID']
     return render_template('viewPatientProfile.html')
 	
 @app.route('/viewRecoveryPhrase')
 @beAdmin.require(http_exception=403)
 def viewRecoveryPhrase():
+    if request.method == 'POST':
+	    DocID = request.form['DID']
     return render_template('viewRecoveryPhrase.html')
 	
 @app.route('/removeUserProfile')
 @delUserP.require(http_exception=403)
 def removeUserProfile():
+	if request.method == 'POST':
+	    UserID = request.form['UID']
     return render_template('removeUserProfile.html')
 	
 @app.errorhandler(401)
