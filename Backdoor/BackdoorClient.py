@@ -115,20 +115,25 @@ def main():
 	# Printing out the provided
 	print "First Argument: ", sys.argv[1]
 	# Determine what the XML root is
-	e = ET.parse(sys.argv[1])
-	# For testing purposes; returning the root.
-	eRoot = e.getroot()
-	eRootValue = eRoot.tag
-	print "root for XML: ", eRootValue
-	if eRootValue == "DBFile":
-		for child in eRoot:
-			if child.tag == "SystemAdministratorUserProfile":			
-				uploadAdmin(child)			
-			#elif child.tag == "DoctorUserProfile":			
-				#uploadDoctor(child)
+	if len(sys.argv < 1):
+		print "[*] Arguments need to be provided"
 	else:
-		print("[*] Wrong XML file provided.")
-		exit(0)
+		if sys.argv[1] == "loadData":			
+			e = ET.parse(sys.argv[2])
+			# For testing purposes; returning the root.
+			eRoot = e.getroot()
+			eRootValue = eRoot.tag
+			print "root for XML: ", eRootValue
+			if eRootValue == "DBFile":
+				for child in eRoot:
+					if child.tag == "SystemAdministratorUserProfile":			
+						uploadAdmin(child)			
+					#elif child.tag == "DoctorUserProfile":			
+						#uploadDoctor(child)
+			else:
+				print("[*] Wrong XML file provided.")
+				exit(0)
+		
 
 
 
