@@ -27,37 +27,37 @@ to_sign_in = ActionNeed('sign in')
 
 # Permissions
 addPatient = Permission(be_admin, be_doctor, be_nurse, be_medAd)
-addPatient.description = "System Administrator's permissions"
+addPatient.description = "add patint permission"
 editPatient = Permission(be_admin, be_doctor, be_nurse, be_medAd)
-editPatient.description = "Doctor's permissions"
+editPatient.description = "edit patient permission"
 addDoctor = Permission(be_admin)
-addDoctor.description = "Nurse's permissions"
+addDoctor.description = "add doctor permission"
 editDoctor = Permission(be_admin)
-editDoctor.description = "Medical Administrator's permissions"
+editDoctor.description = "edit doctor permission"
 addMedAdmin = Permission(be_admin,be_doctor)
-addMedAdmin.description = "Insurance Administrator's permissions"
+addMedAdmin.description = "add Medical Administrator permission"
 editMedAdmin = Permission(be_admin,be_doctor)
-editMedAdmin.description = "Insurance Administrator's permissions"
+editMedAdmin.description = "edit Medical Administrator permission"
 addInsAdmin = Permission(be_admin)
-addInsAdmin.description = "Patient's permissions"
+addInsAdmin.description = "add Insurance Admin permission"
 editInsAdmin = Permission(be_admin)
-editInsAdmin.description = "Patient's permissions"
+editInsAdmin.description = "edit Insurance Admin permission"
 addNurse = Permission(be_admin, be_doctor)
-addNurse.description = "Patient's permissions"
+addNurse.description = "add Nurse permission"
 editNurse = Permission(be_admin, be_doctor)
-editNurse.description = "Patient's permissions"
+editNurse.description = "edit Nurse permission"
 addSysAdmin = Permission(be_admin)
-addSysAdmin.description = "Patient's permissions"
+addSysAdmin.description = "add System Admin permission"
 editSysAdmin = Permission(be_admin)
-editSysAdmin.description = "Patient's permissions"
+editSysAdmin.description = "edit System Admin permission"
 delUserP = Permission(be_admin)
-delUserP.description = "Patient's permissions"
+delUserP.description = "delete User Permission permission"
 assignPerm = Permission(be_admin)
-assignPerm.description = "Patient's permissions"
+assignPerm.description = "assign Permission permission"
 editRecordAccess = Permission(be_admin)
-editRecordAccess.description = "Patient's permissions"
+editRecordAccess.description = "edit Record Acess permission"
 viewPII = Permission(be_medAd,be_insAd)
-viewPII.description = "Patient's permissions"
+viewPII.description = "View PII permission"
 all = Permission(be_admin,be_doctor,be_insAd,be_medAd,be_nurse,be_patient)
 all.description = "all users permitted"
 beAdmin= Permission(be_admin)
@@ -80,11 +80,11 @@ def authenticate(email, password):
     elif password == email + "nurse":
         return "nurse"
     elif password == email + "medAdmin":
-		return "medAdmin"
+        return "medAdmin"
     elif password == email + "insAdmin":
-		return "insAdmin"
+        return "insAdmin"
     elif password == email + "patient":
-		return "patient"
+        return "patient"
     else:
         return None
 
