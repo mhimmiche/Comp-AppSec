@@ -2,7 +2,6 @@ import sys
 import defusedxml.ElementTree as ET
 
 def uploadAdmin(adminRoot):
-	print "[*] Found an Administrator"
 	vals = {"Username":False,"Roles":False,"Permissions":False,"FirstName":False,"LastName":False}	
 	for child in adminRoot:
 		#print ">>>>> ", child.tag, "With value ", child.text
@@ -11,15 +10,106 @@ def uploadAdmin(adminRoot):
 				vals[k] = child.text
 	for k,v in vals.items():
 		print k, v
-	print "[*] End of Administrator"
 
 def uploadDoctor(doctorRoot):
-	print "[*] Found a Doctor"
-	for child in doctorRoot:
-		print ">>>>> ", child.tag, "With value ", child.text
-	print "[*] End of Doctor"
+	vals = {"Username":False,"Roles":False,"Permissions":False,"FirstName":False,"LastName":False,"PracticeName":False,"PracticeAddress":False,"RecoveryPhrase":False}	
+	for child in adminRoot:
+		#print ">>>>> ", child.tag, "With value ", child.text
+		for k,v in vals.items():
+			if child.tag == k:
+				vals[k] = child.text
+	for k,v in vals.items():
+		print k, v
 
+def uploadNurse(nurseRoot):
+	vals = {"Username":False,"Roles":False,"Permissions":False,"FirstName":False,"LastName":False,"PracticeName":False,"PracticeAddress":False,"AssociatedDoctors":False}	
+	for child in adminRoot:
+		#print ">>>>> ", child.tag, "With value ", child.text
+		for k,v in vals.items():
+			if child.tag == k:
+				vals[k] = child.text
+	for k,v in vals.items():
+		print k, v
 
+def uploadMedicalAdmin(medicalAdminRoot):
+	vals = {"Username":False,"Roles":False,"Permissions":False,"FirstName":False,"LastName":False,"PracticeName":False,"PracticeAddress":False,"AssociatedDoctors":False,"AssociatedNurses":False}	
+	for child in adminRoot:
+		#print ">>>>> ", child.tag, "With value ", child.text
+		for k,v in vals.items():
+			if child.tag == k:
+				vals[k] = child.text
+	for k,v in vals.items():
+		print k, v
+
+def uploadInsuranceAdmin(insuranceAdmin):
+	vals = {"Username":False,"Roles":False,"Permissions":False,"FirstName":False,"LastName":False,"CompanyName":False,"CompanyAddress":False}	
+	for child in adminRoot:
+		#print ">>>>> ", child.tag, "With value ", child.text
+		for k,v in vals.items():
+			if child.tag == k:
+				vals[k] = child.text
+	for k,v in vals.items():
+		print k, v
+
+def uploadPatientUser(patientUserRoot):
+	vals = {"Username":False,"Roles":False,"Permissions":False,"FirstName":False,"LastName":False,"DOB":False,"SSN":False,"Address":False}	
+	for child in adminRoot:
+		#print ">>>>> ", child.tag, "With value ", child.text
+		for k,v in vals.items():
+			if child.tag == k:
+				vals[k] = child.text
+	for k,v in vals.items():
+		print k, v
+
+def uploadDoctorExamRecord(examRecordRoot):
+	vals = {"RecordID":False,"RecordType":False,"RecordDate":False,"Owner":False,"Patient":False,"EditPermissions":False,"ViewPermissions":False,"Date":False}	
+	for child in adminRoot:
+		#print ">>>>> ", child.tag, "With value ", child.text
+		for k,v in vals.items():
+			if child.tag == k:
+				vals[k] = child.text
+	for k,v in vals.items():
+		print k, v
+
+def uploadDiagnosisRecord(diagnosisRecordRoot):
+	vals = {"RecordID":False,"RecordType":False,"RecordDate":False,"Owner":False,"Patient":False,"EditPermissions":False,"ViewPermissions":False,"Date":False,"Doctor":False,"Diagnosis":False}	
+	for child in adminRoot:
+		#print ">>>>> ", child.tag, "With value ", child.text
+		for k,v in vals.items():
+			if child.tag == k:
+				vals[k] = child.text
+	for k,v in vals.items():
+		print k, v
+
+def uploadTestResultsRecord(testResultRoot):
+	vals = {"RecordID":False,"RecordType":False,"RecordDate":False,"Owner":False,"Patient":False,"EditPermissions":False,"ViewPermissions":False,"Date":False,"Doctor":False,"Lab":False,"Notes":False}	
+	for child in adminRoot:
+		#print ">>>>> ", child.tag, "With value ", child.text
+		for k,v in vals.items():
+			if child.tag == k:
+				vals[k] = child.text
+	for k,v in vals.items():
+		print k, v
+
+def uploadInsuranceClaimRecord(insuranceClaimRoot):
+	vals = {"RecordID":False,"RecordType":False,"RecordDate":False,"Owner":False,"Patient":False,"EditPermissions":False,"ViewPermissions":False,"Date":False,"MedicalAdministrator":False,"Amount":False,"Status":False}	
+	for child in adminRoot:
+		#print ">>>>> ", child.tag, "With value ", child.text
+		for k,v in vals.items():
+			if child.tag == k:
+				vals[k] = child.text
+	for k,v in vals.items():
+		print k, v
+
+def uploadrawRecord(rawRecordRoot):
+	vals = {"RecordID":False,"RecordType":False,"RecordDate":False,"Owner":False,"Patient":False,"EditPermissions":False,"ViewPermissions":False,"Description":False,"File":False}	
+	for child in adminRoot:
+		#print ">>>>> ", child.tag, "With value ", child.text
+		for k,v in vals.items():
+			if child.tag == k:
+				vals[k] = child.text
+	for k,v in vals.items():
+		print k, v
 
 def main():
 	# Printing out the provided
