@@ -84,6 +84,38 @@ INSERT INTO Permission VALUES ("Remove User Profile","Ability to remove an exist
 INSERT INTO Permission VALUES ("Assign Permissions","Ability to assign permissions to user profiles.");
 INSERT INTO Permission VALUES ("Edit Record Access","Ability to edit record View Permissions also Edit Permissions lists fields.");
 INSERT INTO Permission VALUES ("View PII","Ability to view personally identifiable information (PII) held in the system.");*/
+<<<<<<< HEAD
+=======
+
+
+CREATE TABLE UserPro
+(
+username VARCHAR(20) 
+, role  VARCHAR(20)
+, permission VARCHAR(20)
+, fName VARCHAR(20)
+, lName VARCHAR(20)
+, specInfo VARCHAR(30)
+, CONSTRAINT username_PK PRIMARY KEY(username)
+, CONSTRAINT username_con UNIQUE (username)
+, CONSTRAINT permission_FK FOREIGN KEY (permission) REFERENCES SMIRK.Permission (permission)
+);
+
+CREATE TABLE Record
+(
+  recordID INT
+, recordType VARCHAR(30)
+, recordDate DATE
+, owner VARCHAR(20)
+, patient VARCHAR(20)
+, editPermissions VARCHAR(20)
+, viewPermissions VARCHAR(20)
+, recordTypeSpec VARCHAR(20)
+, CONSTRAINT record_unique UNIQUE (recordID)
+, CONSTRAINT owner_valid_FK FOREIGN KEY (owner) REFERENCES SMIRK.UserPro (username)
+
+);
+>>>>>>> ff1ec136d829dbe0f25db2bec00f7df094673f86
 
 
 CREATE TABLE UserPro
@@ -134,6 +166,7 @@ CREATE TABLE PatientSpecInfo
 , address VARCHAR(20)
 );
 
+<<<<<<< HEAD
 CREATE TABLE Record
 (
   recordID INT
@@ -149,6 +182,8 @@ CREATE TABLE Record
 , CONSTRAINT type_check_con CHECK(recordType = "DoctorExamRecord" OR recordType = "TestResults" OR recordType = "Diagnosis" OR recordType = "InsuranceClaim" OR recordType = "PatientDocCorr" OR recordType = "RawRec")
 );
 
+=======
+>>>>>>> ff1ec136d829dbe0f25db2bec00f7df094673f86
 CREATE TABLE Note
 (
   DateofNote Date
@@ -171,6 +206,7 @@ CREATE TABLE TestResults
 , Lab VARCHAR(20)
 , Notes VARCHAR(20)
 , CONSTRAINT TESTnote_FK FOREIGN KEY (Notes) REFERENCES SMIRK.Note (contents)
+<<<<<<< HEAD
 );
 
 CREATE TABLE Diagnosis
@@ -178,6 +214,8 @@ CREATE TABLE Diagnosis
   DATEOfTest Date
 , Doctor VARCHAR(20)
 , Diagnosis VARCHAR(100)
+=======
+>>>>>>> ff1ec136d829dbe0f25db2bec00f7df094673f86
 );
 
 CREATE TABLE InsuranceClaim
@@ -198,8 +236,14 @@ CREATE TABLE PatientDocCorr
 CREATE TABLE RawRec
 (
   Description VARCHAR(99)
+<<<<<<< HEAD
 , File BINARY(99)
 );
 
 
+=======
+, File INT
+);
+
+>>>>>>> ff1ec136d829dbe0f25db2bec00f7df094673f86
 commit;
