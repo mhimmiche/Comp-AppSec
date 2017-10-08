@@ -2,8 +2,7 @@
 {% block body %}
   <h2>removeUserProfile<h2>
   <form action="{{ url_for('removeUserProfile') }}" method=post>
-    Email <input type=text name=email>
-    Password <input type=password name=password>
-              <input type=submit value=Login>
+    UserID <input type=text name=UID>
+              <input type=submit value=Remove User>
   </form>
 {% endblock %}
