@@ -5,19 +5,7 @@ CREATE DATABASE SMIRK;
 commit;
 USE SMIRK;
 
-CREATE TABLE UserSpecInfo
-(
-  praName VARCHAR(20)
-, praAddress VARCHAR(20)
-, recPhrase VARCHAR(20)
-, associatedDoc VARCHAR(20)
-, associatedNur VARCHAR(20)
-, companyName VARCHAR(20)
-, companyAddress VARCHAR(20)
-, DOB DATE
-, SSN VARCHAR(11)
-, address VARCHAR(20)
-);
+
 
 CREATE TABLE Role 
 (
@@ -26,23 +14,20 @@ role VARCHAR(30)
 , CONSTRAINT role_unique UNIQUE (role)
 );
 
-
-
-/*INSERT INTO Role VALUES ("System Administrator", "Highest default permissions. Administers the SMIRK system.");
+INSERT INTO Role VALUES ("System Administrator", "Highest default permissions. Administers the SMIRK system.");
 INSERT INTO Role VALUES ("Doctor", "A medical doctor");
 INSERT INTO Role VALUES ("Nurse", "A medical nurse");
 INSERT INTO Role VALUES ("Medical Administrator", "Administers information for doctors and nurses. Primary tasks include interfacing with Insurance Administrators.");
 INSERT INTO Role VALUES ("Insurance Administrator", "Insurance company representative.");
-INSERT INTO Role VALUES ("Patient", "Medical patient");*/
+INSERT INTO Role VALUES ("Patient", "Medical patient");
 
 CREATE TABLE Permission
 (
-permission VARCHAR(20)
+permission VARCHAR(30)
 , description VARCHAR(99)
 , CONSTRAINT permission_con UNIQUE (permission)
 );
-
-/*INSERT INTO Permission VALUES ("Add Patient","Ability to add a patient user profile to the system.");
+INSERT INTO Permission VALUES ("Add Patient","Ability to add a patient user profile to the system.");
 INSERT INTO Permission VALUES ("Edit Patient","Ability to edit an existing patient user profile information.");
 INSERT INTO Permission VALUES ("Add Doctor","Ability to add a doctor user profile to the system.");
 INSERT INTO Permission VALUES ("Edit Doctor","Ability to edit an existing doctor user profile information.");
@@ -57,21 +42,18 @@ INSERT INTO Permission VALUES ("Edit System Administrator", "Ability to edit an 
 INSERT INTO Permission VALUES ("Remove User Profile","Ability to remove an existing user profile.");
 INSERT INTO Permission VALUES ("Assign Permissions","Ability to assign permissions to user profiles.");
 INSERT INTO Permission VALUES ("Edit Record Access","Ability to edit record View Permissions also Edit Permissions lists fields.");
-INSERT INTO Permission VALUES ("View PII","Ability to view personally identifiable information (PII) held in the system.");*/
+INSERT INTO Permission VALUES ("View PII","Ability to view personally identifiable information (PII) held in the system.");
 
-
-/*CREATE TABLE RolePermis
+CREATE TABLE RolePermis
 (
 role VARCHAR(30)
 , defaultPer VARCHAR(30)
-, CONSTRAINT role_con UNIQUE (role)
+, CONSTRAINT role_con_PK PRIMARY KEY (role,defaultPer)
 , CONSTRAINT role_FK FOREIGN KEY (role) REFERENCES SMIRK.Role (role)
 , CONSTRAINT defaultPer_FK FOREIGN KEY (defaultPer) REFERENCES SMIRK.Permission (permission)
-);*/
+);
 
-
-
-/*INSERT INTO RolePermis Values ("System Administrator", "Add Patient");
+INSERT INTO RolePermis Values ("System Administrator", "Add Patient");
 INSERT INTO RolePermis Values ("System Administrator", "Edit Patient");
 INSERT INTO RolePermis Values ("System Administrator", "Add Doctor");
 INSERT INTO RolePermis Values ("System Administrator","Edit Doctor");
@@ -85,7 +67,6 @@ INSERT INTO RolePermis Values ("System Administrator", "Add System Administrator
 INSERT INTO RolePermis Values ("System Administrator", "Edit System Administrator");
 INSERT INTO RolePermis Values ("System Administrator", "Remove User Profile");
 INSERT INTO RolePermis Values ("System Administrator", "Assign Permissions");
-INSERT INTO RolePermis Values ("System Administrator", "Assign Permissions");
 INSERT INTO RolePermis Values ("Doctor", "Add Patient");
 INSERT INTO RolePermis Values ("Doctor", "Edit Patient");
 INSERT INTO RolePermis Values ("Doctor", "Add Medical Administrator");
@@ -97,8 +78,28 @@ INSERT INTO RolePermis Values ("Nurse", "Edit Patient");
 INSERT INTO RolePermis Values ("Medical Administrator", "Add Patient");
 INSERT INTO RolePermis Values ("Medical Administrator", "Edit Patient");
 INSERT INTO RolePermis Values ("Medical Administrator", "View PII");
-INSERT INTO RolePermis Values ("Insurance Administrator", "View PII");*/
+INSERT INTO RolePermis Values ("Insurance Administrator", "View PII");
 
+CREATE TABLE PermissionsPerRole
+(
+  Role VARCHAR(30)
+, Permissions VARCHAR(1000)
+, CONSTRAINT role_ck_FK FOREIGN KEY (Role) REFERENCES SMIRK.Role(role)
+);
+
+INSERT INTO PermissionsPerRole Values ("System Administrator", "Add Patient, Edit Patient, Add Doctor, Edit Doctor, Add Medical Administrator, Edit Medical Administrator, Add Insurance Administrator, Edit Insurance Administrator, Add Nurse, Edit Nurse, Add System Administrator, Edit System Administrator, Delete User Profile, Assign Permissions, Edit Record Access");
+INSERT INTO PermissionsPerRole Values ("Doctor", "Add Patient, Edit Patient, Add Medical Administrator, Edit Medical Administrator, Add Nurse, Edit Nurse");
+INSERT INTO PermissionsPerRole Values ("Nurse", "Add Patient, Edit Patient");
+INSERT INTO PermissionsPerRole Values ("Medical Administrator", "Add Patient, Edit Patient, View PII");
+INSERT INTO PermissionsPerRole Values ("Insurance Administrator", "View PII");
+INSERT INTO PermissionsPerRole Values ("Patient", "");
+
+CREATE TABLE UserAssociation
+(
+  username VARCHAR(20)
+, id INT
+, CONSTRAINT assocation_PK PRIMARY KEY(username, id)
+);
 
 CREATE TABLE UserPro
 (
@@ -111,9 +112,72 @@ username VARCHAR(20)
 , CONSTRAINT username_PK PRIMARY KEY(username)
 , CONSTRAINT username_UQ UNIQUE (username)
 , CONSTRAINT permission_FK FOREIGN KEY (permission) REFERENCES SMIRK.Permission (permission)
-, CONSTRAINT specInfo_check_con CHECK(specInfo = "DocSpecInfo" OR specInfo = "NurSpecInfo" OR specInfo = "PatientSpecInfo" OR specInfo = "MedAdminSpecInfo" OR specInfo = "InsurAdminSpecInfo")
-#, CONSTRAINT UProle_FK FOREIGN KEY (role) REFERENCES SMIRK.Role (role)
+, CONSTRAINT specInfo_FK FOREIGN KEY (specInfo) REFERENCES SMIRK.UserAssociation(id)
+, 
+, CONSTRAINT UProle_FK FOREIGN KEY (role) REFERENCES SMIRK.Role (role)
 );
+
+/*
+Create SQL security invoker view assDocQuery as
+	SELECT username from UserPro where role = 'Doctor';
+Create SQL security invoker view assNurQuery as
+	SELECT username from UserPro where role = 'Nurse';
+*/
+INSERT INTO UserPro VALUES ("anolen3", "Doctor", "Add Patient", "Andrew", "Nolen", "DocSpecInfo");
+
+CREATE TABLE assDocQuery (PRIMARY KEY (username))
+  SELECT username as username from UserPro where role='Doctor';
+
+
+CREATE TABLE assNurQuery (PRIMARY KEY (username))
+  SELECT username from UserPro where role='Nurse';
+
+CREATE TABLE UserSpecInfo
+(
+  username VARCHAR(20)
+, id INT NOT NULL
+, praName VARCHAR(20) DEFAULT NULL
+, praAddress VARCHAR(20) DEFAULT NULL
+, recPhrase VARCHAR(20) DEFAULT NULL
+, associatedDoc VARCHAR(20) DEFAULT NULL
+, associatedNur VARCHAR(20) DEFAULT NULL
+, companyName VARCHAR(20) DEFAULT NULL
+, companyAddress VARCHAR(20) DEFAULT NULL
+, DOB DATE DEFAULT NULL
+, SSN VARCHAR(11) DEFAULT NULL
+, address VARCHAR(20) DEFAULT NULL
+, CONSTRAINT id_PK PRIMARY KEY (id)
+, CONSTRAINT associatedDoc_FK FOREIGN KEY (associatedDoc) REFERENCES SMIRK.assDocQuery(username)
+, CONSTRAINT associatedNur_FK FOREIGN KEY (associatedNur) REFERENCES SMIRK.assNurQuery(username)
+, CONSTRAINT usernameAssociation_FK FOREIGN KEY (id) REFERENCES SMIRK.UserAssociation(id)
+);
+
+CREATE TABLE RecordInfo
+(
+  RecordID INT AUTO_INCREMENT #change name?; unique identifier for the user
+, RecordDate Date DEFAULT NULL #DoctorExam, Diagnosis, TestResult, InsuranceClaim
+, DoctorUname VARCHAR(20) DEFAULT NULL #DoctorExam, Diagnosis, TestResult, PatientDocCor
+, Notes VARCHAR(100) DEFAULT NULL #DoctorExam, TestResults, PatientDocCor
+, Diagnosis VARCHAR(20) DEFAULT NULL #Diagnosis
+, Lab VARCHAR(20) DEFAULT NULL #TestResults
+, MedAdmin VARCHAR(20) DEFAULT NULL #InsuranceClaim; a username; nullable?
+, Amount FLOAT DEFAULT NULL #InsuranceClaim
+, Status VARCHAR(20) DEFAULT NULL #InsuranceClaim
+, Description VARCHAR(100) DEFAULT NULL #RawRecord
+, File BINARY DEFAULT NULL #RawRecord
+, CONSTRAINT recordID_UQ UNIQUE(RecordID)
+, CONSTRAINT DoctorUname_FK FOREIGN KEY (DoctorUname) REFERENCES SMIRK.UserPro(username)
+, CONSTRAINT status_ck CHECK(Status='Filed' OR Status='Examining' OR Status='Rejected' OR Status='Accepted' OR Status='Paid')
+, CONSTRAINT MedAdmin_FK FOREIGN KEY (MedAdmin) REFERENCES SMIRK.UserPro(username)
+);
+
+CREATE TABLE Note
+(
+  DateofNote Date
+, contents VARCHAR(50)
+, CONSTRAINT content_unique UNIQUE(contents, DateofNote)
+);
+
 /*
 CREATE TABLE DocSpecInfo
 (
@@ -122,40 +186,8 @@ praName VARCHAR(20)
 , recPhrase VARCHAR(20)
 );
 */
-/*
-create or replace trigger timeoverlaptrig
-  before insert on reservations
-  for each row
-declare
-  v_startdatetime date;
-  v_enddatetime date;
-begin
-  select startdatetime into v_startdatetime from reservations where (:new.startdatetime between startdatetime and enddatetime) and bedid=:new.bedid;
-  select enddatetime into v_enddatetime from reservations where (:new.enddatetime between startdatetime and enddatetime) and bedid=:new.bedid;
-  if v_startdatetime is not null or v_enddatetime is not null THEN RAISE_APPLICATION_ERROR(-20002, 'Time overlap');
-  END IF;
-END;
-/
-commit;
-*/
-
-/*create or replace trigger assdoctrig 
-	before insert on NurSpecInfo
-	for each row
-declare
-	v_docUname varchar(20);
-BEGIN
-	select Username into v_docUname from UserPro where role='Doctor' AND (:new.Username=docUser);
-#		return 'True'
-#	select startdatetime into v_startdatetime from reservations where (:new.startdatetime between startdatetime and enddatetime) and bedid=:new.bedid;
-	if v_docUname is null then RAISE_APPLICATION_ERROR(-20002, 'Error Adding Doctor');
-	END
-	*/
 
 /*
-Create SQL security invoker view assDocQuery as
-	SELECT username from UserPro where role = 'Doctor';
-
 CREATE TABLE NurSpecInfo
 (
 praName VARCHAR(20)
@@ -207,31 +239,7 @@ CREATE TABLE PatientSpecInfo
 );
 */
 
-CREATE TABLE RecordInfo
-(
-  RecordID INT #change name?; unique identifier for the user
-, RecordDate Date #DoctorExam, Diagnosis, TestResult, InsuranceClaim
-, DoctorUname VARCHAR(20) #DoctorExam, Diagnosis, TestResult, PatientDocCor
-, Notes VARCHAR(100) #DoctorExam, TestResults, PatientDocCor
-, Diagnosis VARCHAR(20) #Diagnosis
-, Lab VARCHAR(20) #TestResults
-, MedAdmin VARCHAR(20) DEFAULT NULL #InsuranceClaim; a username; nullable?
-, Amount FLOAT #InsuranceClaim
-, Status VARCHAR(20) #InsuranceClaim
-, Description VARCHAR(100) #RawRecord
-, File BINARY #RawRecord
-, CONSTRAINT recordID_UQ UNIQUE(RecordID)
-, CONSTRAINT DoctorUname_FK FOREIGN KEY (DoctorUname) REFERENCES SMIRK.UserPro(username)
-, CONSTRAINT status_ck CHECK(Status='Filed' OR Status='Examining' OR Status='Rejected' OR Status='Accepted' OR Status='Paid')
-, CONSTRAINT MedAdmin_FK FOREIGN KEY (MedAdmin) REFERENCES SMIRK.UserPro(username)
-);
 
-CREATE TABLE Note
-(
-  DateofNote Date
-, contents VARCHAR(50)
-, CONSTRAINT content_unique UNIQUE(contents, DateofNote)
-);
 
 /* CREATE TABLE DoctorExamRecord
 (
@@ -282,14 +290,14 @@ CREATE TABLE UserPass
 (
   Username VARCHAR(20)
 , Password VARCHAR(120)
-#, CONSTRAINT username_exists_FK FOREIGN KEY (Username) REFERENCES SMIRK.UserPro (username)
-);*/
+, CONSTRAINT username_exists_FK FOREIGN KEY (Username) REFERENCES SMIRK.UserPro (username)
+);
 
-#DELIMITER //
-/*CREATE TRIGGER addToUserPass
+CREATE TRIGGER addToUserPass
 AFTER INSERT ON SMIRK.UserPro
 FOR EACH ROW
 	INSERT INTO UserPass VALUES (New.Username, "p@ssw0rd");
 */
 #INSERT INTO UserPro VALUES ("anolen3", "Nurse", "Add Patient", "Andrew", "Nolen", "DocSpecInfo");
+
 commit;
