@@ -17,13 +17,16 @@ def SystemAdministratorUserProfile(adminRoot):
 	canAdd = checkIfCanAdd(vals)
 	if canAdd:
 		print "woo!"
+		# Query
+		# "INSERT INTO UserPro (username, role, permission, fName, lName, specInfo) 
+		# VALUES (%s, %s, %s, %s, %s, "None")", (vals[Username], vals[Roles], vals[Permissions], vals[FirstName], vals[LastName],)
 	else:
 		print "Some values were left blank."
 
 
 def DoctorUserProfile(doctorRoot):
 	vals = {"Username":False,"Roles":False,"Permissions":False,"FirstName":False,"LastName":False,"PracticeName":False,"PracticeAddress":False,"RecoveryPhrase":False}
-	for child in adminRoot:
+	for child in doctorRoot:
 		#print ">>>>> ", child.tag, "With value ", child.text
 		for k,v in vals.items():
 			if child.tag == k:
@@ -31,12 +34,15 @@ def DoctorUserProfile(doctorRoot):
 	canAdd = checkIfCanAdd(vals)
 	if canAdd:
 		print "woo!"
+		# Query
+		# "INSERT INTO UserPro (username, role, permission, fName, lName, specInfo) 
+		# VALUES (%s, %s, %s, %s, %s, "None")", (vals[Username], vals[Roles], vals[Permissions], vals[FirstName], vals[LastName],)
 	else:
 		print "Some values were left blank."
 
 def NurseUserProfile(nurseRoot):
 	vals = {"Username":False,"Roles":False,"Permissions":False,"FirstName":False,"LastName":False,"PracticeName":False,"PracticeAddress":False,"AssociatedDoctors":False}
-	for child in adminRoot:
+	for child in nurseRoot:
 		#print ">>>>> ", child.tag, "With value ", child.text
 		for k,v in vals.items():
 			if child.tag == k:
@@ -49,7 +55,7 @@ def NurseUserProfile(nurseRoot):
 
 def MedicalAdministratorUserProfile(medicalAdminRoot):
 	vals = {"Username":False,"Roles":False,"Permissions":False,"FirstName":False,"LastName":False,"PracticeName":False,"PracticeAddress":False,"AssociatedDoctors":False,"AssociatedNurses":False}
-	for child in adminRoot:
+	for child in medicalAdminRoot:
 		#print ">>>>> ", child.tag, "With value ", child.text
 		for k,v in vals.items():
 			if child.tag == k:
@@ -62,7 +68,7 @@ def MedicalAdministratorUserProfile(medicalAdminRoot):
 
 def InsuranceAdministratorUserProfile(insuranceAdmin):
 	vals = {"Username":False,"Roles":False,"Permissions":False,"FirstName":False,"LastName":False,"CompanyName":False,"CompanyAddress":False}
-	for child in adminRoot:
+	for child in insuranceAdmin:
 		#print ">>>>> ", child.tag, "With value ", child.text
 		for k,v in vals.items():
 			if child.tag == k:
@@ -75,7 +81,7 @@ def InsuranceAdministratorUserProfile(insuranceAdmin):
 
 def PatientUserProfile(patientUserRoot):
 	vals = {"Username":False,"Roles":False,"Permissions":False,"FirstName":False,"LastName":False,"DOB":False,"SSN":False,"Address":False}	
-	for child in adminRoot:
+	for child in patientUserRoot:
 		#print ">>>>> ", child.tag, "With value ", child.text
 		for k,v in vals.items():
 			if child.tag == k:
@@ -88,7 +94,7 @@ def PatientUserProfile(patientUserRoot):
 
 def DoctorExamRecord(examRecordRoot):
 	vals = {"RecordID":False,"RecordType":False,"RecordDate":False,"Owner":False,"Patient":False,"EditPermissions":False,"ViewPermissions":False,"Date":False}	
-	for child in adminRoot:
+	for child in examRecordRoot:
 		#print ">>>>> ", child.tag, "With value ", child.text
 		for k,v in vals.items():
 			if child.tag == k:
@@ -101,7 +107,7 @@ def DoctorExamRecord(examRecordRoot):
 
 def DiagnosisRecord(diagnosisRecordRoot):
 	vals = {"RecordID":False,"RecordType":False,"RecordDate":False,"Owner":False,"Patient":False,"EditPermissions":False,"ViewPermissions":False,"Date":False,"Doctor":False,"Diagnosis":False}
-	for child in adminRoot:
+	for child in diagnosisRecordRoot:
 		#print ">>>>> ", child.tag, "With value ", child.text
 		for k,v in vals.items():
 			if child.tag == k:
@@ -114,7 +120,7 @@ def DiagnosisRecord(diagnosisRecordRoot):
 
 def TestResultsRecord(testResultRoot):
 	vals = {"RecordID":False,"RecordType":False,"RecordDate":False,"Owner":False,"Patient":False,"EditPermissions":False,"ViewPermissions":False,"Date":False,"Doctor":False,"Lab":False,"Notes":False}
-	for child in adminRoot:
+	for child in testResultRoot:
 		#print ">>>>> ", child.tag, "With value ", child.text
 		for k,v in vals.items():
 			if child.tag == k:
@@ -127,7 +133,7 @@ def TestResultsRecord(testResultRoot):
 
 def InsuranceClaimRecord(insuranceClaimRoot):
 	vals = {"RecordID":False,"RecordType":False,"RecordDate":False,"Owner":False,"Patient":False,"EditPermissions":False,"ViewPermissions":False,"Date":False,"MedicalAdministrator":False,"Amount":False,"Status":False}
-	for child in adminRoot:
+	for child in insuranceClaimRoot:
 		#print ">>>>> ", child.tag, "With value ", child.text
 		for k,v in vals.items():
 			if child.tag == k:
@@ -140,7 +146,7 @@ def InsuranceClaimRecord(insuranceClaimRoot):
 
 def RawRecord(rawRecordRoot):
 	vals = {"RecordID":False,"RecordType":False,"RecordDate":False,"Owner":False,"Patient":False,"EditPermissions":False,"ViewPermissions":False,"Description":False,"File":False}
-	for child in adminRoot:
+	for child in rawRecordRoot:
 		#print ">>>>> ", child.tag, "With value ", child.text
 		for k,v in vals.items():
 			if child.tag == k:
