@@ -11,7 +11,7 @@ I wrote a PowerShell script to automate installation:
 2. Open a Power Shell script as administrator
 3. Run the following commands:
 ```powershell
-$autoScript=curl https://pastebin.com/raw/ERuQKn1f
+$autoScript=curl https://raw.githubusercontent.com/mhimmiche/RandomScripts/master/pythonSetupScript.ps1
 $autoScript.Content >> installScript.ps1
 powershell.exe -ExecutionPolicy ByPass -File .\installScript.ps1
 ```
