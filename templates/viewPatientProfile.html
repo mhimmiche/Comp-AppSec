@@ -2,8 +2,7 @@
 {% block body %}
   <h2>viewPatientProfile<h2>
   <form action="{{ url_for('viewPatientProfile') }}" method=post>
-    Email <input type=text name=email>
-    Password <input type=password name=password>
-              <input type=submit value=Login>
+    PatientID <input type=text name=PID>
+              <input type=submit value=View>
   </form>
 {% endblock %}

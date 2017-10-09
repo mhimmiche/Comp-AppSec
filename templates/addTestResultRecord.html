@@ -2,8 +2,10 @@
 {% block body %}
   <h2>addTestResultRecord<h2>
   <form action="{{ url_for('addTestResultRecord') }}" method=post>
-    Email <input type=text name=email>
-    Password <input type=password name=password>
+    Date YYYY/MM/DD <input type=text name=Date>
+    Doctor <input type=text name=Doctor>
+	Lab <input type=text name=Doctor>
+	Notes  <input type=text name=Notes>
               <input type=submit value=Login>
   </form>
 {% endblock %}

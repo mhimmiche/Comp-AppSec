@@ -2,8 +2,11 @@
 {% block body %}
   <h2>createInsAdmin<h2>
   <form action="{{ url_for('createInsAdmin') }}" method=post>
-    Email <input type=text name=email>
-    Password <input type=password name=password>
-              <input type=submit value=Login>
+    First <input type=text name=First>
+	Last <input type=text name=Last>
+	New Password <input type=password name=Npass>
+	Company Name <input type=text name=CompanyName>
+	Company Address <input type=text name=CompanyAddr>
+              <input type=submit value=Create>
   </form>
 {% endblock %}

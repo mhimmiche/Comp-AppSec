@@ -2,8 +2,8 @@
 {% block body %}
   <h2>addRawRecord<h2>
   <form action="{{ url_for('addRawRecord') }}" method=post>
-    Email <input type=text name=email>
-    Password <input type=password name=password>
-              <input type=submit value=Login>
+    Description <input type=text name=Description>
+    File <input type=file name=file>
+              <input type=submit value=add>
   </form>
 {% endblock %}

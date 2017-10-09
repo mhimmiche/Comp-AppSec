@@ -2,8 +2,9 @@
 {% block body %}
   <h2>editRecordPerm<h2>
   <form action="{{ url_for('editRecordPerm') }}" method=post>
-    Email <input type=text name=email>
-    Password <input type=password name=password>
+    Record ID <input type=text name=recordID>
+	Edit Permissions <input type=text name=editPerm>
+	View Permissions <input type=text name=viewPerm>
               <input type=submit value=Login>
   </form>
 {% endblock %}

@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block body %}
+  <h2>createDoctor<h2>
+  <form action="{{ url_for('createDoctor') }}" method=post>
+	First <input type=text name=First>
+	Last <input type=text name=Last>
+	New Password <input type=password name=Npass>
+	Practice Name <input type=text name=PracticeName>
+    Practice Address <input type=text name=PracticeAdd>
+	Recovery Phrase <input type=text name=RecPhrase>
+              <input type=submit value=Create>
+  </form>
+{% endblock %}

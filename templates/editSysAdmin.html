@@ -2,8 +2,10 @@
 {% block body %}
   <h2>editSysAdmin<h2>
   <form action="{{ url_for('editSysAdmin') }}" method=post>
-    Email <input type=text name=email>
-    Password <input type=password name=password>
-              <input type=submit value=Login>
+    UserID <input type=text name=UserID>
+	First <input type=text name=First>
+	Last <input type=text name=Last>
+	New Password <input type=password name=Npass>
+              <input type=submit value=Edit>
   </form>
 {% endblock %}

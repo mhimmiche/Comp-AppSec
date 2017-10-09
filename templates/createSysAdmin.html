@@ -2,8 +2,9 @@
 {% block body %}
   <h2>createSysAdmin<h2>
   <form action="{{ url_for('createSysAdmin') }}" method=post>
-    Email <input type=text name=email>
-    Password <input type=password name=password>
-              <input type=submit value=Login>
+    First <input type=text name=First>
+	Last <input type=text name=Last>
+	New Password <input type=password name=Npass>
+              <input type=submit value=create>
   </form>
 {% endblock %}
