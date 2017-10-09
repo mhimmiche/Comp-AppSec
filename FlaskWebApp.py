@@ -6,8 +6,10 @@ from flask import (abort, flash, Flask, g,
 from flask_principal import (ActionNeed, AnonymousIdentity,
     Identity, identity_changed, identity_loaded, Principal, 
 	Permission, RoleNeed)
+from flask.ext.bcrypt import Bcrypt
 
 app = Flask(__name__)
+bcrypt = Bcrypt(app)
 
 app.config.update(
     DEBUG=True,
@@ -72,18 +74,22 @@ apps_permissions = [addPatient, editPatient, addDoctor, editDoctor, addMedAdmin,
 editSysAdmin,delUserP,assignPerm,editRecordAccess,viewPII]
 
 
-def authenticate(email, password):
-    if password == email + "admin":
-        return "admin"
-    elif password == email + "doctor":
+def authenticate(ID, password):
+    #get password and role associated with ID
+	role = ""
+	pass = ""
+    if bcrypt.check_password_hash(pw_hash, password):
+        return role
+		#rest is del if bcrypt works
+    elif password == ID + "doctor":
         return "doctor"
-    elif password == email + "nurse":
+    elif password == ID + "nurse":
         return "nurse"
-    elif password == email + "medAdmin":
+    elif password == ID + "medAdmin":
         return "medAdmin"
-    elif password == email + "insAdmin":
+    elif password == ID + "insAdmin":
         return "insAdmin"
-    elif password == email + "patient":
+    elif password == ID + "patient":
         return "patient"
     else:
         return None
@@ -103,7 +109,7 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        user_id = authenticate(request.form['email'],
+        user_id = authenticate(request.form['ID'],
                                request.form['password'])
         if user_id:
             identity = Identity(user_id)
@@ -211,7 +217,9 @@ def editPerm():
 	if request.method == 'POST':
 		UserN = request.form['UserN']
 		Permission = request.form['perm']
-		
+		#role =   #SQL To find UserN role
+	
+	    identity.provides()
     return render_template('editPerm.html')
 
 @app.route('/addDoctorExamRecord')
