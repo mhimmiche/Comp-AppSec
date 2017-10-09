@@ -172,7 +172,7 @@ def setITAdmin():
 
 
 def main():
-	if len(sys.argv < 1):
+	if len(sys.argv) < 1:
 		print "[*] Arguments need to be provided"
 	else:
 		if sys.argv[1] == "loadData":
@@ -182,15 +182,15 @@ def main():
 			eRootValue = eRoot.tag
 			if eRootValue == "DBFile":
 				for child in eRoot:
-					#TODO: Change funtion names to tag names
 					methodName = child.tag
 					possibleMethods = globals().copy()
 					possibleMethods.update(locals())
 					rightMethod = possibleMethods.get(methodName)
 					if not rightMethod:
-						print "Wrong tag provided: ", methodName
+						print "Wrong tag was found: ", child.tag
 					else:
-						methodName(child)
+						rightMethod(child)
+					
 			else:
 				print("[*] Wrong XML file provided.")
 				exit(0)
