@@ -94,48 +94,39 @@ INSERT INTO PermissionsPerRole Values ("Medical Administrator", "Add Patient, Ed
 INSERT INTO PermissionsPerRole Values ("Insurance Administrator", "View PII");
 INSERT INTO PermissionsPerRole Values ("Patient", "");
 
-CREATE TABLE UserAssociation
-(
-  username VARCHAR(20)
-, id INT
-, CONSTRAINT assocation_PK PRIMARY KEY(username, id)
-);
-
 CREATE TABLE UserPro
 (
 username VARCHAR(20) 
-, role  VARCHAR(20)
-, permission VARCHAR(20)
+, role  VARCHAR(30)
+, permission VARCHAR(1000) DEFAULT NULL
 , fName VARCHAR(20)
 , lName VARCHAR(20)
-, specInfo VARCHAR(30)
+, specInfoID INT AUTO_INCREMENT NOT NULL
 , CONSTRAINT username_PK PRIMARY KEY(username)
 , CONSTRAINT username_UQ UNIQUE (username)
-, CONSTRAINT permission_FK FOREIGN KEY (permission) REFERENCES SMIRK.Permission (permission)
-, CONSTRAINT specInfo_FK FOREIGN KEY (specInfo) REFERENCES SMIRK.UserAssociation(id)
-, 
+#, CONSTRAINT permission_FK FOREIGN KEY (permission) REFERENCES SMIRK.Permission (permission)
 , CONSTRAINT UProle_FK FOREIGN KEY (role) REFERENCES SMIRK.Role (role)
+, CONSTRAINT specInfoID_UQ UNIQUE (specInfoID)
 );
 
-/*
-Create SQL security invoker view assDocQuery as
-	SELECT username from UserPro where role = 'Doctor';
-Create SQL security invoker view assNurQuery as
-	SELECT username from UserPro where role = 'Nurse';
-*/
-INSERT INTO UserPro VALUES ("anolen3", "Doctor", "Add Patient", "Andrew", "Nolen", "DocSpecInfo");
+DELIMITER //
+CREATE TRIGGER popPermission
+AFTER INSERT ON UserPro
+FOR EACH ROW
+UPDATE UserPro
+SET
+  Table_B.Role=Table_A.role
+FROM
+  UserPro AS Table_A INNER JOIN PermissionsPerRole as Table_B ON Table_A.role = Table_B.Role
+WHERE 
+  Table_B.Role=Table_A.role
+//
 
-CREATE TABLE assDocQuery (PRIMARY KEY (username))
-  SELECT username as username from UserPro where role='Doctor';
 
-
-CREATE TABLE assNurQuery (PRIMARY KEY (username))
-  SELECT username from UserPro where role='Nurse';
 
 CREATE TABLE UserSpecInfo
 (
-  username VARCHAR(20)
-, id INT NOT NULL
+  id INT NOT NULL
 , praName VARCHAR(20) DEFAULT NULL
 , praAddress VARCHAR(20) DEFAULT NULL
 , recPhrase VARCHAR(20) DEFAULT NULL
@@ -147,10 +138,13 @@ CREATE TABLE UserSpecInfo
 , SSN VARCHAR(11) DEFAULT NULL
 , address VARCHAR(20) DEFAULT NULL
 , CONSTRAINT id_PK PRIMARY KEY (id)
-, CONSTRAINT associatedDoc_FK FOREIGN KEY (associatedDoc) REFERENCES SMIRK.assDocQuery(username)
-, CONSTRAINT associatedNur_FK FOREIGN KEY (associatedNur) REFERENCES SMIRK.assNurQuery(username)
-, CONSTRAINT usernameAssociation_FK FOREIGN KEY (id) REFERENCES SMIRK.UserAssociation(id)
+, CONSTRAINT specInfoID_FK FOREIGN KEY (id) REFERENCES SMIRK.UserPro(SpecInfoID)
 );
+
+INSERT INTO UserPro VALUES ("anolen3", "Doctor", null, "Andrew", "Nolen", 2);
+INSERT INTO UserSpecInfo VALUES (2, null, null, "butts", "badams", "mehdi", null, null, null, null, null);
+
+
 
 CREATE TABLE RecordInfo
 (
@@ -179,6 +173,16 @@ CREATE TABLE Note
 );
 
 /*
+
+CREATE TABLE assDocQuery (PRIMARY KEY (username))
+  SELECT username as username from UserPro where role='Doctor';
+
+
+CREATE TABLE assNurQuery (PRIMARY KEY (username))
+  SELECT username from UserPro where role='Nurse';
+
+
+
 CREATE TABLE DocSpecInfo
 (
 praName VARCHAR(20)
