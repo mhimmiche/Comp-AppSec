@@ -5,8 +5,6 @@ CREATE DATABASE SMIRK;
 commit;
 USE SMIRK;
 
-
-
 CREATE TABLE Role 
 (
 role VARCHAR(30)
@@ -128,8 +126,20 @@ CREATE TABLE UserSpecInfo
 #, CONSTRAINT specInfoID_FK FOREIGN KEY (id) REFERENCES SMIRK.UserPro(SpecInfoID)
 );
 
-INSERT INTO UserPro VALUES ("anolen3", "Doctor", null, "Andrew", "Nolen");
-INSERT INTO UserSpecInfo VALUES (2, null, null, "butts", "badams", "mehdi", null, null, null, null, null);
+CREATE TABLE UserPass
+(
+  Username VARCHAR(20)
+, Password VARCHAR(120)
+, CONSTRAINT username_exists_FK FOREIGN KEY (Username) REFERENCES SMIRK.UserPro (username)
+);
+
+CREATE TRIGGER addToUserPass
+AFTER INSERT ON SMIRK.UserPro
+FOR EACH ROW
+  INSERT INTO UserPass VALUES (New.Username, "p@ssw0rd");
+
+#INSERT INTO UserPro VALUES ("anolen3", "Doctor", null, "Andrew", "Nolen");
+#INSERT INTO UserSpecInfo VALUES (2, null, null, "butts", "badams", "mehdi", null, null, null, null, null);
 
 
 
@@ -276,19 +286,9 @@ CREATE TABLE RawRec
   Description VARCHAR(99)
 , File BINARY(99)
 );
-
-CREATE TABLE UserPass
-(
-  Username VARCHAR(20)
-, Password VARCHAR(120)
-, CONSTRAINT username_exists_FK FOREIGN KEY (Username) REFERENCES SMIRK.UserPro (username)
-);
-
-CREATE TRIGGER addToUserPass
-AFTER INSERT ON SMIRK.UserPro
-FOR EACH ROW
-	INSERT INTO UserPass VALUES (New.Username, "p@ssw0rd");
 */
+
+
 #INSERT INTO UserPro VALUES ("anolen3", "Nurse", "Add Patient", "Andrew", "Nolen", "DocSpecInfo");
 
 commit;
