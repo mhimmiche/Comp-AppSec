@@ -1,0 +1,140 @@
+<DBFile>
+    <SystemAdministratorUserProfile>
+        <Username>DMurphy</Username>
+        <Roles>System Administrator</Roles>
+        <FirstName>Dade</FirstName>
+        <LastName>Murphy</LastName>
+    </SystemAdministratorUserProfile>
+    <SystemAdministratorUserProfile>
+        <Username>PCook</Username>
+        <Roles>System Administrator</Roles>
+        <FirstName>Paul</FirstName>
+        <LastName>Cook</LastName>
+    </SystemAdministratorUserProfile>
+    <DoctorUserProfile>
+        <Username>KLibby</Username>
+        <Roles>Doctor</Roles>
+        <FirstName>Kate</FirstName>
+        <LastName>Libby</LastName>
+        <PracticeName>The Gibson Associates</PracticeName>
+        <PracticeAddress>1995 Aburn Road, Chicago, IL 60007</PracticeAddress>
+        <RecoveryPhrase>You are not in my class</RecoveryPhrase>
+    </DoctorUserProfile>
+    <PatientUserProfile>
+        <Username>MBishop</Username>
+        <Roles>Patient</Roles>
+        <FirstName>Martin</FirstName>
+        <LastName>Bishop</LastName>
+        <DOB>08/18/1936</DOB>
+        <SSN>312-12-4253</SSN>
+        <Address>145 Redford Drive, Baltimore, MD 21234</Address>
+    </PatientUserProfile>
+    <NurseUserProfile>
+        <Username>KFlynn</Username>
+        <Roles>Nurse</Roles>
+        <FirstName>Kevin</FirstName>
+        <LastName>Flynn</LastName>
+        <PracticeName>The Gibson Associates</PracticeName>
+        <PracticeAddress>1983 Aburn Road, Chicago, IL 6000</PracticeAddress>
+        <AssociatedDoctors>KLibby</AssociatedDoctors>
+    </NurseUserProfile>
+    <MedicalAdministratorUserProfile>
+        <Username>DLightman</Username>
+        <Roles>Medical Administrator</Roles>
+        <FirstName>David</FirstName>
+        <LastName>Lightman</LastName>
+        <PracticeName>The Gibson Associates</PracticeName>
+        <PracticeAddress>1983 Aburn Road, Chicago, IL 60007</PracticeAddress>
+        <AssociatedDoctors>KLibby</AssociatedDoctors>
+        <AssociatedNurses>KFlynn</AssociatedNurses>
+    </MedicalAdministratorUserProfile>
+    <InsuranceAdministratorUserProfile>
+        <Username>PGarcia</Username>
+        <Roles>Insurance Administrator</Roles>
+        <FirstName>Penelope</FirstName>
+        <LastName>Garcia</LastName>
+        <CompanyName>Vangsness Insurance</CompanyName>
+        <CompanyAddress>17000 Denechi Rd, Austin, TX 73301</CompanyAddress>
+    </InsuranceAdministratorUserProfile>
+    <DoctorExamRecord>
+        <RecordID>9123245</RecordID>
+        <RecordType>Doctor Exam Record</RecordType>
+        <RecordDate>09/04/17</RecordDate>
+        <Owner>KLibby</Owner>
+        <Patient>MBishop</Patient>
+        <EditPermissions>MBishop</EditPermissions>
+        <ViewPermissions>KLibby,MBishop</ViewPermissions>
+        <Date>09/03/2017</Date>
+        <Doctor>KLibby</Doctor>
+        <Notes>Looks great for his age</Notes>
+    </DoctorExamRecord>
+    <DiagnosisRecord>
+        <RecordID>832942</RecordID>
+        <RecordType>Diagnosis Record</RecordType>
+        <RecordDate>09/07/17</RecordDate>
+        <Owner>KLibby</Owner>
+        <Patient>MBishop</Patient>
+        <EditPermissions>KLibby</EditPermissions>
+        <ViewPermissions>KLibby</ViewPermissions>
+        <Date>09/04/17</Date>
+        <Doctor>KLibby</Doctor>
+        <Diagnosis>Positive for The Sting</Diagnosis>
+    </DiagnosisRecord>
+    <TestResultsRecord>
+        <RecordID>5434567</RecordID>
+        <RecordType>Test Result Record</RecordType>
+        <RecordDate>09/04/2017</RecordDate>
+        <Owner>KFlynn</Owner>
+        <Patient>MBishop</Patient>
+        <EditPermissions>KLibby,KFlynn</EditPermissions>
+        <ViewPermissions>KLibby,KFlynn,MBishop</ViewPermissions>
+        <Date>09/03/2017</Date>
+        <Doctor>KLibby</Doctor>
+        <Lab>ENCOM</Lab>
+        <Notes>Digitizing</Notes>
+    </TestResultsRecord>
+    <InsuranceClaimRecord>
+        <RecordID>2114563</RecordID>
+        <RecordType>Insurance Claim Record</RecordType>
+        <RecordDate>08/14/17</RecordDate>
+        <Owner>PGarcia</Owner>
+        <Patient>MBishop</Patient>
+        <EditPermissions>PGarcia,DLightman</EditPermissions>
+        <ViewPermissions>PGarcia,DLightman</ViewPermissions>
+        <Date>09/03/2017</Date>
+        <MedicalAdministrator>DLightman</MedicalAdministrator>
+        <Amount>745.00</Amount>
+        <Status>Filed</Status>
+    </InsuranceClaimRecord>
+    <PatientDoctorCorrespondenceRecord>
+        <RecordID>7753571</RecordID>
+        <RecordType>Patient Doctor Correspondence Record</RecordType>
+        <RecordDate>08/14/17</RecordDate>
+        <Owner>KLibby</Owner>
+        <Patient>MBishop</Patient>
+        <EditPermissions>KLibby,MBishop</EditPermissions>
+        <ViewPermissions>KLibby,MBishop</ViewPermissions>
+        <Doctor>KLibby</Doctor>
+        <Notes>
+            <Note>
+                <Date>08/14/2017</Date>
+                <Text>Change bandage daily.</Text>
+            </Note>
+            <Note>
+                <Date>08/15/17</Date>
+                <Text>Does this look infected?</Text>
+            </Note>
+        </Notes>
+    </PatientDoctorCorrespondenceRecord>
+    <RawRecord>
+        <RecordID>63481249</RecordID>
+        <RecordType>Raw Record</RecordType>
+        <RecordDate>08/14/17</RecordDate>
+        <Owner>PGarcia</Owner>
+        <Patient>MBishop</Patient>
+        <EditPermissions>PGarcia</EditPermissions>
+        <ViewPermissions>PGarcia,MBishop</ViewPermissions>
+        <Description>License Scan</Description>
+        <File>TWFuIGlzIGRpc3Rpbmd1aXNoZWQsIG5vdCBvbmx</File>
+    </RawRecord>
+</DBFile>
