@@ -7,6 +7,9 @@ from flask_principal import (ActionNeed, AnonymousIdentity,
     Identity, identity_changed, identity_loaded, Principal, 
     Permission, RoleNeed)
 from flask.ext.bcrypt import Bcrypt
+#!/usr/bin/python
+import mysql.connector as mariadb
+
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
@@ -17,6 +20,9 @@ app.config.update(
 
 
 principals = Principal(app, skip_static=True)
+
+mariadb_connection = mariadb.connect(user='root', password='appsec', database='SMIRK')
+cursor = mariadb_connection.cursor()
 
 # Needs
 be_admin = RoleNeed('admin')
@@ -75,27 +81,20 @@ editSysAdmin,delUserP,assignPerm,editRecordAccess,viewPII]
 
 
 def authenticate(ID, password):
-    #get password and role associated with ID
-    role = ""
-    passw = ""
+
+    pw_hash="";
+        
+    cursor.execute("SELECT pw FROM ?????? WHERE username=%s", (ID))   
+    for p in cursor:
+        pw_hash=r
+    
+        #get password and role associated with ID
     if bcrypt.check_password_hash(pw_hash, password):
-        return role
-        #rest is del if bcrypt works
-    elif password == ID + "doctor":
-        return "doctor"
-    elif password == ID + "nurse":
-        return "nurse"
-    elif password == ID + "medAdmin":
-        return "medAdmin"
-    elif password == ID + "insAdmin":
-        return "insAdmin"
-    elif password == ID + "patient":
-        return "patient"
-    else:
-        return None
+        return ID
 
 
 def current_privileges():
+    cursor.execute("SELECT permission FROM UserPro WHERE username=%s", (ID))
     return (('{method} : {value}').format(method=n.method, value=n.value)
             for n in apps_needs if n in g.identity.provides)
 
@@ -150,6 +149,7 @@ def createPatient():
         DOB = request.form['DOB']
         SSN = request.form['SSN']
         Addr = request.form['Address']
+    cursor.execute("INSERT INTO UserPro (fName,lName,) VALUES (%s,%s)", (first_name, last_name))
     return render_template('createPatient.html')
     
 @app.route('/createDoctor')
@@ -432,27 +432,29 @@ def authorisation_failed(e):
 @identity_loaded.connect_via(app)
 def on_identity_loaded(sender, identity):
     needs = []
-
-    if identity.id in ('admin', 'doctor', 'nurse', 'medAdmin'
+    cursor.execute("SELECT role FROM UserPro WHERE username=%s", (identity.id))
+    for r in cursor:
+        role=r
+    if role in ('admin', 'doctor', 'nurse', 'medAdmin'
                         ,'insAdmin', 'patient', 'sign in'):
         needs.append(to_sign_in)
         
-    if identity.id == "admin":
+    if role == "admin":
         needs.append(be_admin)
 
-    if identity.id == 'doctor':
+    if role == 'doctor':
         needs.append(be_admin)
         
-    if identity.id == 'nurse':
+    if role == 'nurse':
         needs.append(be_nurse)
 
-    if identity.id == 'medAdmin':
+    if role == 'medAdmin':
         needs.append(be_medAd)
         
-    if identity.id == 'insAdmin':
+    if role == 'insAdmin':
         needs.append(be_insAd)
         
-    if identity.id == 'patient':
+    if role == 'patient':
         needs.append(be_patient)
         
     for n in needs:
