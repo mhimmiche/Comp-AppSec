@@ -1,15 +1,16 @@
 import sys
 import getpass as gp
 import defusedxml.ElementTree as ET
+import mysql.connector as mariadb
 
 def checkIfCanAdd(vals):
 	for k,v in vals.items():
 		if vals[k] == False:
 			return False
-	return True
+	return True	
 
-def SystemAdministratorUserProfile(adminRoot):
-	vals = {"Username":False,"Roles":False,"Permissions":False,"FirstName":False,"LastName":False}
+def SystemAdministratorUserProfile(adminRoot, cursor):
+	vals = {"Username":False,"Roles":False,"FirstName":False,"LastName":False}
 	for child in adminRoot:
 		for k,v in vals.items():
 			if child.tag == k:
@@ -18,14 +19,22 @@ def SystemAdministratorUserProfile(adminRoot):
 	if canAdd:
 		print "woo!"
 		# Query
-		# "INSERT INTO UserPro (username, role, permission, fName, lName, specInfo) 
-		# VALUES (%s, %s, %s, %s, %s, "None")", (vals[Username], vals[Roles], vals[Permissions], vals[FirstName], vals[LastName],)
+		try:
+			cursor.execute("SELECT Permissions FROM PermissionPerRole WHERE Role = %s", (vals["Roles"],))
+		except mariadb.Error as error:
+			print "Error with query."
+		for perm in cursor:
+			rolePerm = perm
+		try:
+			cursor.execute("INSERT INTO UserPro (username, role, permission, fName, lName) VALUES (%s, %s, %s, %s, %s)", (vals["Username"], vals["Roles"], rolePerm, vals["Permissions"], vals["FirstName"], vals["LastName"]))
+		except mariadb.Error as error:
+			print "Error with query."
 	else:
 		print "Some values were left blank."
 
 
-def DoctorUserProfile(doctorRoot):
-	vals = {"Username":False,"Roles":False,"Permissions":False,"FirstName":False,"LastName":False,"PracticeName":False,"PracticeAddress":False,"RecoveryPhrase":False}
+def DoctorUserProfile(doctorRoot, cursor):
+	vals = {"Username":False,"Roles":False,"FirstName":False,"LastName":False,"PracticeName":False,"PracticeAddress":False,"RecoveryPhrase":False}
 	for child in doctorRoot:
 		#print ">>>>> ", child.tag, "With value ", child.text
 		for k,v in vals.items():
@@ -35,13 +44,21 @@ def DoctorUserProfile(doctorRoot):
 	if canAdd:
 		print "woo!"
 		# Query
-		# "INSERT INTO UserPro (username, role, permission, fName, lName, specInfo) 
-		# VALUES (%s, %s, %s, %s, %s, "None")", (vals[Username], vals[Roles], vals[Permissions], vals[FirstName], vals[LastName],)
+		try:
+			cursor.execute("SELECT Permissions FROM PermissionPerRole WHERE Role = %s", (vals["Roles"],))
+		except mariadb.Error as error:
+			print "Error with query."
+		for perm in cursor:
+			rolePerm = perm
+		try:
+			cursor.execute("INSERT INTO UserPro (username, role, permission, fName, lName) VALUES (%s, %s, %s, %s, %s)", (vals["Username"], vals["Roles"], rolePerm, vals["Permissions"], vals["FirstName"], vals["LastName"]))
+		except mariadb.Error as error:
+			print "Error with query."
 	else:
 		print "Some values were left blank."
 
-def NurseUserProfile(nurseRoot):
-	vals = {"Username":False,"Roles":False,"Permissions":False,"FirstName":False,"LastName":False,"PracticeName":False,"PracticeAddress":False,"AssociatedDoctors":False}
+def NurseUserProfile(nurseRoot, cursor):
+	vals = {"Username":False,"Roles":False,"FirstName":False,"LastName":False,"PracticeName":False,"PracticeAddress":False,"AssociatedDoctors":False}
 	for child in nurseRoot:
 		#print ">>>>> ", child.tag, "With value ", child.text
 		for k,v in vals.items():
@@ -50,11 +67,22 @@ def NurseUserProfile(nurseRoot):
 	canAdd = checkIfCanAdd(vals)
 	if canAdd:
 		print "woo!"
+		# Query
+		try:
+			cursor.execute("SELECT Permissions FROM PermissionPerRole WHERE Role = %s", (vals["Roles"],))
+		except mariadb.Error as error:
+			print "Error with query."
+		for perm in cursor:
+			rolePerm = perm
+		try:
+			cursor.execute("INSERT INTO UserPro (username, role, permission, fName, lName) VALUES (%s, %s, %s, %s, %s)", (vals["Username"], vals["Roles"], rolePerm, vals["Permissions"], vals["FirstName"], vals["LastName"]))
+		except mariadb.Error as error:
+			print "Error with query."
 	else:
 		print "Some values were left blank."
 
-def MedicalAdministratorUserProfile(medicalAdminRoot):
-	vals = {"Username":False,"Roles":False,"Permissions":False,"FirstName":False,"LastName":False,"PracticeName":False,"PracticeAddress":False,"AssociatedDoctors":False,"AssociatedNurses":False}
+def MedicalAdministratorUserProfile(medicalAdminRoot, cursor):
+	vals = {"Username":False,"Roles":False,"FirstName":False,"LastName":False,"PracticeName":False,"PracticeAddress":False,"AssociatedDoctors":False,"AssociatedNurses":False}
 	for child in medicalAdminRoot:
 		#print ">>>>> ", child.tag, "With value ", child.text
 		for k,v in vals.items():
@@ -63,11 +91,22 @@ def MedicalAdministratorUserProfile(medicalAdminRoot):
 	canAdd = checkIfCanAdd(vals)
 	if canAdd:
 		print "woo!"
+		# Query
+		try:
+			cursor.execute("SELECT Permissions FROM PermissionPerRole WHERE Role = %s", (vals["Roles"],))
+		except mariadb.Error as error:
+			print "Error with query."
+		for perm in cursor:
+			rolePerm = perm
+		try:
+			cursor.execute("INSERT INTO UserPro (username, role, permission, fName, lName) VALUES (%s, %s, %s, %s, %s)", (vals["Username"], vals["Roles"], rolePerm, vals["Permissions"], vals["FirstName"], vals["LastName"]))
+		except mariadb.Error as error:
+			print "Error with query."
 	else:
 		print "Some values were left blank."
 
-def InsuranceAdministratorUserProfile(insuranceAdmin):
-	vals = {"Username":False,"Roles":False,"Permissions":False,"FirstName":False,"LastName":False,"CompanyName":False,"CompanyAddress":False}
+def InsuranceAdministratorUserProfile(insuranceAdmin, cursor):
+	vals = {"Username":False,"Roles":False,"FirstName":False,"LastName":False,"CompanyName":False,"CompanyAddress":False}
 	for child in insuranceAdmin:
 		#print ">>>>> ", child.tag, "With value ", child.text
 		for k,v in vals.items():
@@ -76,11 +115,22 @@ def InsuranceAdministratorUserProfile(insuranceAdmin):
 	canAdd = checkIfCanAdd(vals)
 	if canAdd:
 		print "woo!"
+		# Query
+		try:
+			cursor.execute("SELECT Permissions FROM PermissionPerRole WHERE Role = %s", (vals["Roles"],))
+		except mariadb.Error as error:
+			print "Error with query."
+		for perm in cursor:
+			rolePerm = perm
+		try:
+			cursor.execute("INSERT INTO UserPro (username, role, permission, fName, lName) VALUES (%s, %s, %s, %s, %s)", (vals["Username"], vals["Roles"], rolePerm, vals["Permissions"], vals["FirstName"], vals["LastName"]))
+		except mariadb.Error as error:
+			print "Error with query."
 	else:
 		print "Some values were left blank."
 
-def PatientUserProfile(patientUserRoot):
-	vals = {"Username":False,"Roles":False,"Permissions":False,"FirstName":False,"LastName":False,"DOB":False,"SSN":False,"Address":False}	
+def PatientUserProfile(patientUserRoot, cursor):
+	vals = {"Username":False,"Roles":False,"FirstName":False,"LastName":False,"DOB":False,"SSN":False,"Address":False}	
 	for child in patientUserRoot:
 		#print ">>>>> ", child.tag, "With value ", child.text
 		for k,v in vals.items():
@@ -89,10 +139,21 @@ def PatientUserProfile(patientUserRoot):
 	canAdd = checkIfCanAdd(vals)
 	if canAdd:
 		print "woo!"
+		# Query
+		try:
+			cursor.execute("SELECT Permissions FROM PermissionPerRole WHERE Role = %s", (vals["Roles"],))
+		except mariadb.Error as error:
+			print "Error with query."
+		for perm in cursor:
+			rolePerm = perm
+		try:
+			cursor.execute("INSERT INTO UserPro (username, role, permission, fName, lName) VALUES (%s, %s, %s, %s, %s)", (vals["Username"], vals["Roles"], rolePerm, vals["Permissions"], vals["FirstName"], vals["LastName"]))
+		except mariadb.Error as error:
+			print "Error with query."
 	else:
 		print "Some values were left blank."
 
-def DoctorExamRecord(examRecordRoot):
+def DoctorExamRecord(examRecordRoot, cursor):
 	vals = {"RecordID":False,"RecordType":False,"RecordDate":False,"Owner":False,"Patient":False,"EditPermissions":False,"ViewPermissions":False,"Date":False}	
 	for child in examRecordRoot:
 		#print ">>>>> ", child.tag, "With value ", child.text
@@ -105,7 +166,7 @@ def DoctorExamRecord(examRecordRoot):
 	else:
 		print "Some values were left blank."
 
-def DiagnosisRecord(diagnosisRecordRoot):
+def DiagnosisRecord(diagnosisRecordRoot, cursor):
 	vals = {"RecordID":False,"RecordType":False,"RecordDate":False,"Owner":False,"Patient":False,"EditPermissions":False,"ViewPermissions":False,"Date":False,"Doctor":False,"Diagnosis":False}
 	for child in diagnosisRecordRoot:
 		#print ">>>>> ", child.tag, "With value ", child.text
@@ -118,7 +179,7 @@ def DiagnosisRecord(diagnosisRecordRoot):
 	else:
 		print "Some values were left blank."
 
-def TestResultsRecord(testResultRoot):
+def TestResultsRecord(testResultRoot, cursor):
 	vals = {"RecordID":False,"RecordType":False,"RecordDate":False,"Owner":False,"Patient":False,"EditPermissions":False,"ViewPermissions":False,"Date":False,"Doctor":False,"Lab":False,"Notes":False}
 	for child in testResultRoot:
 		#print ">>>>> ", child.tag, "With value ", child.text
@@ -131,7 +192,7 @@ def TestResultsRecord(testResultRoot):
 	else:
 		print "Some values were left blank."
 
-def InsuranceClaimRecord(insuranceClaimRoot):
+def InsuranceClaimRecord(insuranceClaimRoot, cursor):
 	vals = {"RecordID":False,"RecordType":False,"RecordDate":False,"Owner":False,"Patient":False,"EditPermissions":False,"ViewPermissions":False,"Date":False,"MedicalAdministrator":False,"Amount":False,"Status":False}
 	for child in insuranceClaimRoot:
 		#print ">>>>> ", child.tag, "With value ", child.text
@@ -144,7 +205,7 @@ def InsuranceClaimRecord(insuranceClaimRoot):
 	else:
 		print "Some values were left blank."
 
-def RawRecord(rawRecordRoot):
+def RawRecord(rawRecordRoot, cursor):
 	vals = {"RecordID":False,"RecordType":False,"RecordDate":False,"Owner":False,"Patient":False,"EditPermissions":False,"ViewPermissions":False,"Description":False,"File":False}
 	for child in rawRecordRoot:
 		#print ">>>>> ", child.tag, "With value ", child.text
@@ -169,9 +230,13 @@ def setITAdmin():
 	else:
 		print "Woo!"
 
-
+def connectToDB():
+	mariadb_connection = mariadb.connect(user='root', password='appsec', database='SMIRK')
+	cursor = mariadb_connection.cursor()
+	return cursor
 
 def main():
+	cursor = connectToDB()
 	if len(sys.argv) < 1:
 		print "[*] Arguments need to be provided"
 	else:
@@ -189,7 +254,7 @@ def main():
 					if not rightMethod:
 						print "Wrong tag was found: ", child.tag
 					else:
-						rightMethod(child)
+						rightMethod(child, cursor)
 					
 			else:
 				print("[*] Wrong XML file provided.")
