@@ -136,9 +136,9 @@ CREATE TABLE UserPass
 CREATE TRIGGER addToUserPass
 AFTER INSERT ON SMIRK.UserPro
 FOR EACH ROW
-  INSERT INTO UserPass VALUES (New.Username, "p@ssw0rd");
+  INSERT INTO UserPass VALUES (New.Username, "");
 
-#INSERT INTO UserPro VALUES ("anolen3", "Doctor", null, "Andrew", "Nolen");
+INSERT INTO UserPro VALUES ("anolen3", "Doctor", null, "Andrew", "Nolen");
 #INSERT INTO UserSpecInfo VALUES (2, null, null, "butts", "badams", "mehdi", null, null, null, null, null);
 
 
