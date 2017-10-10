@@ -101,28 +101,15 @@ username VARCHAR(20)
 , permission VARCHAR(1000) DEFAULT NULL
 , fName VARCHAR(20)
 , lName VARCHAR(20)
-, specInfoID INT AUTO_INCREMENT NOT NULL
+#, specInfoID INT AUTO_INCREMENT NOT NULL
 , CONSTRAINT username_PK PRIMARY KEY(username)
 , CONSTRAINT username_UQ UNIQUE (username)
 #, CONSTRAINT permission_FK FOREIGN KEY (permission) REFERENCES SMIRK.Permission (permission)
 , CONSTRAINT UProle_FK FOREIGN KEY (role) REFERENCES SMIRK.Role (role)
-, CONSTRAINT specInfoID_UQ UNIQUE (specInfoID)
+#, CONSTRAINT specInfoID_UQ UNIQUE (specInfoID)
 );
 
-DELIMITER //
-CREATE TRIGGER popPermission
-AFTER INSERT ON UserPro
-FOR EACH ROW
-UPDATE UserPro
-SET
-  Table_B.Role=Table_A.role
-FROM
-  UserPro AS Table_A INNER JOIN PermissionsPerRole as Table_B ON Table_A.role = Table_B.Role
-WHERE 
-  Table_B.Role=Table_A.role
-//
-
-
+#trigger to copy roles from PermissionsPerRole to UserPro in python
 
 CREATE TABLE UserSpecInfo
 (
@@ -138,10 +125,10 @@ CREATE TABLE UserSpecInfo
 , SSN VARCHAR(11) DEFAULT NULL
 , address VARCHAR(20) DEFAULT NULL
 , CONSTRAINT id_PK PRIMARY KEY (id)
-, CONSTRAINT specInfoID_FK FOREIGN KEY (id) REFERENCES SMIRK.UserPro(SpecInfoID)
+#, CONSTRAINT specInfoID_FK FOREIGN KEY (id) REFERENCES SMIRK.UserPro(SpecInfoID)
 );
 
-INSERT INTO UserPro VALUES ("anolen3", "Doctor", null, "Andrew", "Nolen", 2);
+INSERT INTO UserPro VALUES ("anolen3", "Doctor", null, "Andrew", "Nolen");
 INSERT INTO UserSpecInfo VALUES (2, null, null, "butts", "badams", "mehdi", null, null, null, null, null);
 
 
@@ -172,8 +159,8 @@ CREATE TABLE Note
 , CONSTRAINT content_unique UNIQUE(contents, DateofNote)
 );
 
-/*
 
+/*
 CREATE TABLE assDocQuery (PRIMARY KEY (username))
   SELECT username as username from UserPro where role='Doctor';
 
